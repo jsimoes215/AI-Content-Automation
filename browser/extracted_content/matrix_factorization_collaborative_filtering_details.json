@@ -1,0 +1,36 @@
+📄 Extracted from page: Matrix factorization  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/collaborative/matrix
+
+Extracted content:
+```json
+{
+  "title": "Matrix factorization | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/collaborative/matrix",
+  "summary": "Matrix factorization is a simple embedding model used in collaborative filtering for recommendation systems. It approximates a sparse user-item feedback matrix (A) by learning lower-dimensional user (U) and item (V) embedding matrices. The product of these embeddings (UVᵀ) estimates user-item interactions, where each entry represents the dot product of a user's and an item's embedding. This method offers a more compact representation of data compared to a full matrix, leveraging latent structures. The core challenge lies in defining an objective function that correctly handles both observed and unobserved interactions, typically addressed by Weighted Matrix Factorization, which incorporates a hyperparameter to balance the influence of observed and unobserved (treated as zero) entries. Optimization algorithms like Stochastic Gradient Descent (SGD) and Weighted Alternating Least Squares (WALS) are employed to minimize this objective function, each with distinct advantages and disadvantages regarding flexibility, convergence, and handling of sparse data.",
+  "key_points": [
+    "**Definition and Goal**: Matrix factorization is an embedding model that approximates a feedback matrix `A` (users × items) by learning a user embedding matrix `U` (`m × d`) and an item embedding matrix `V` (`n × d`), where `d` is the embedding dimension. The goal is for the dot product `⟨Ui, Vj⟩` to approximate `Ai,j`.",
+    "**Compact Representation**: It provides a significantly more compact representation: `O((n+m)d)` entries for embeddings versus `O(nm)` for the full matrix, especially when `d` is much smaller than `m` and `n`. This allows the model to find latent structure in sparse data.",
+    "**Initial Objective Functions and Their Limitations**:",
+    "  *   **Observed-only Squared Distance**: `min Σ(i,j)∈obs(Aij - ⟨Ui,Vj⟩)²`. Problem: Only sums over positive interactions, leading to minimal loss for all-ones matrices and poor generalization.",
+    "  *   **Frobenius Norm (Treating Unobserved as Zero)**: `min ||A - UVᵀ||F²`. Solvable via SVD, but for very sparse matrices (common in real-world recommendations), the approximation `UVᵀ` tends towards zero, resulting in poor generalization.",
+    "**Weighted Matrix Factorization Objective Function**: This improved formulation addresses sparsity by weighing observed and unobserved entries:",
+    "  *   `min U,V ( Σ(i,j)∈obs(Aij - ⟨Ui,Vj⟩)² + w₀Σ(i,j)∉obs(⟨Ui,Vj⟩)² )`",
+    "  *   `w₀` is a crucial hyperparameter that balances the contribution of observed and unobserved entries.",
+    "  *   **Advanced Weighting**: In practical applications, observed pairs `(i,j)` can also be weighted (`wi,j`) to correct for frequent items/queries that might otherwise dominate the objective function: `Σ(i,j)∈obs wi,j(Aij - ⟨Ui,Vj⟩)² + w₀Σ(i,j)∉obs(⟨Ui,Vj⟩)²`.",
+    "**Minimizing the Objective Function (Algorithms)**:",
+    "  *   **Stochastic Gradient Descent (SGD)**:",
+    "    *   **Advantages**: Very flexible (can use various loss functions), can be parallelized.",
+    "    *   **Disadvantages**: Slower convergence, harder to handle unobserved entries (requires techniques like negative sampling or gravity).",
+    "  *   **Weighted Alternating Least Squares (WALS)**:",
+    "    *   **Mechanism**: The objective is quadratic in `U` and `V` separately (though not jointly convex). WALS initializes embeddings randomly, then iteratively fixes one matrix (U or V) and solves for the other. Each step can be solved exactly via a linear system.",
+    "    *   **Advantages**: Specialized for this objective, converges faster than SGD, easier to handle unobserved entries, can be parallelized.",
+    "    *   **Disadvantages**: Reliant only on Loss Squares.",
+    "  *   **Convergence**: WALS is guaranteed to converge as each step reduces the loss."
+  ],
+  "relevant_links": [
+    "https://wikipedia.org/wiki/Matrix_norm#Frobenius_norm",
+    "https://developers.google.com/machine-learning/crash-course/glossary#SGD"
+  ],
+  "file_name": "matrix_factorization_collaborative_filtering_details.json"
+}
+```

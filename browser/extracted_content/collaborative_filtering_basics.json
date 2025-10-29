@@ -1,0 +1,31 @@
+📄 Extracted from page: Collaborative filtering  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/collaborative/basics
+
+Extracted content:
+```json
+{
+  "title": "Collaborative filtering | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/collaborative/basics",
+  "summary": "This page introduces collaborative filtering as a recommendation system technique that leverages similarities between users and items simultaneously to generate recommendations. It addresses limitations of content-based filtering by enabling serendipitous recommendations and automatically learning embeddings. The core concept involves representing users and items as vectors (embeddings) in a shared, abstract space, where their proximity reflects preference and similarity. The process is illustrated with a movie recommendation example, detailing how 1D and 2D embeddings can model user interests and movie characteristics. The page explains that these embeddings are optimized during training to align with user feedback, making similar users and preferred items closer in the embedding space. It sets the foundation for more advanced models like matrix factorization and deep neural networks, which are used to learn these embeddings.",
+  "key_points": [
+    "Collaborative filtering uses similarities between users and items concurrently to provide recommendations.",
+    "It enables serendipitous recommendations by suggesting items based on the interests of similar users.",
+    "Collaborative filtering models can automatically learn embeddings, eliminating the need for manual feature engineering.",
+    "Embeddings represent users and items as vectors in a shared space where their proximity indicates similarity and preference.",
+    "Training these models involves optimizing embeddings such that the dot product of user and item embeddings is higher for items the user liked (e.g., close to 1) and lower otherwise (e.g., close to 0).",
+    "The movie recommendation example uses a feedback matrix where rows are users and columns are items.",
+    "Feedback can be explicit (numerical ratings) or implicit (binary indicating interest).",
+    "Initially, a 1D embedding (e.g., child-friendly vs. adult-oriented) is introduced to explain user preferences, highlighting its limitations for diverse preferences.",
+    "A 2D embedding (e.g., adding blockbuster vs. arthouse) is then used to better capture complex user preferences and item characteristics.",
+    "The collaborative nature means that if item embeddings are fixed, user embeddings can be learned to group users with similar preferences, and vice versa for items.",
+    "This page serves as an introduction to the concept of collaborative filtering and embeddings, with subsequent modules detailing specific models like Matrix Factorization and Deep Neural Networks for learning these embeddings."
+  ],
+  "relevant_links": [
+    "https://developers.google.com/machine-learning/recommendation/collaborative/matrix",
+    "https://developers.google.com/machine-learning/recommendation/collaborative/summary",
+    "https://developers.google.com/machine-learning/recommendation/dnn/softmax",
+    "https://developers.google.com/machine-learning/recommendation/content-based/summary"
+  ],
+  "file_name": "collaborative_filtering_basics.json"
+}
+```

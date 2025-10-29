@@ -1,0 +1,55 @@
+📄 Extracted from page: Scoring  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/dnn/scoring
+
+Extracted content:
+```json
+{
+  "title": "Scoring | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/dnn/scoring",
+  "summary": "This page details the critical role of the scoring phase in recommendation systems, which occurs after candidate generation and before re-ranking. It explains why a dedicated scoring model is essential, distinguishing it from candidate generator scores by allowing for greater complexity and contextual feature usage. The content emphasizes the importance of carefully selecting objective functions for scoring, illustrating how different objectives (e.g., maximizing click rate vs. watch time) can lead to varied and potentially undesirable recommendation outcomes. It also addresses the significant challenge of positional bias in ranking and proposes solutions to achieve position-independent recommendations.",
+  "key_points": [
+    {
+      "aspect": "Overall Process",
+      "details": "Recommendation systems employ a multi-stage approach: candidate generation, followed by scoring and ranking. The scoring model processes a pool of candidates derived from various generators."
+    },
+    {
+      "aspect": "Candidate Generators",
+      "details": "Candidates can originate from multiple sources, including matrix factorization models for related items, user features for personalization, geographic information for 'local' vs. 'distant' items, popular/trending items, and social graphs (items liked by friends)."
+    },
+    {
+      "aspect": "Rationale for Separate Scoring Model",
+      "details": "A dedicated scoring model is preferred over using candidate generator scores because: 1) Scores from different candidate generators may not be comparable. 2) A separate scoring model can afford to use a richer set of features and a more complex architecture for a smaller pool of candidates, better capturing context."
+    },
+    {
+      "aspect": "Feature Engineering for Scoring",
+      "details": "The scoring model predicts the probability of user interaction (e.g., watching a video) based on: \n- **Query Features:** User watch history, language, country, time.\n- **Video Features:** Title, tags, video embedding."
+    },
+    {
+      "aspect": "Model Architecture and Algorithms",
+      "details": "The page implies the use of a 'more complex model' capable of predicting interaction probability. While specific DNN architectures for scoring are not detailed in this section, the broader context of the guide is 'Recommendation using deep neural networks'. The output is a score used for ranking."
+    },
+    {
+      "aspect": "Choosing an Objective Function",
+      "details": "The selection of the objective function critically impacts recommendation quality. Examples:\n- **Maximize Click Rate:** Can lead to click-bait recommendations and poor user experience.\n- **Maximize Watch Time:** May favor very long videos, potentially leading to poor user experience if not diversified.\n- **Desired Objective (Example):** Increase Diversity and Maximize Session Watch Time (e.g., recommend shorter, engaging videos)."
+    },
+    {
+      "aspect": "Positional Bias in Scoring",
+      "details": "Items displayed lower on the screen are inherently less likely to be clicked, irrespective of their relevance. Scoring models often do not know the eventual display position, making consistent ranking across positions difficult and costly if querying for all positions."
+    },
+    {
+      "aspect": "Solutions for Positional Bias",
+      "details": "To mitigate positional bias:\n- Create position-independent rankings.\n- Score all candidates as if they would appear in the top position on the screen."
+    },
+    {
+      "aspect": "Ranking Mechanism",
+      "details": "After a score is assigned to each candidate by the model, candidates are ranked according to these predictions."
+    }
+  ],
+  "relevant_links": [
+    "https://developers.google.com/machine-learning/problem-framing/",
+    "https://developers.google.com/machine-learning/recommendation/dnn/retrieval",
+    "https://developers.google.com/machine-learning/recommendation/dnn/re-ranking"
+  ],
+  "file_name": "scoring_recommendation_systems.json"
+}
+```

@@ -1,0 +1,131 @@
+📄 Extracted from page: Video semantic search with AI on AWS | AWS for M&E Blog
+URL: https://aws.amazon.com/blogs/media/video-semantic-search-with-ai-on-aws/
+
+Extracted content:
+```json
+{
+  "title": "Video semantic search with AI on AWS | AWS for M&E Blog",
+  "url": "https://aws.amazon.com/blogs/media/video-semantic-search-with-ai-on-aws/",
+  "summary": "This AWS blog post details how to build a scalable AI-powered video semantic search solution using various AWS AI/ML and generative AI services. The solution addresses the challenge of searching large video libraries beyond traditional text search, enabling natural language queries based on scenes, actions, concepts, people, and objects. It outlines a comprehensive architecture with two main workflows: media content ingestion and media search. The ingestion process extracts rich metadata (transcriptions, shot segments, detected figures, detailed descriptions) from videos, transforms them into multimodal embeddings, and stores them in a vector database. The search workflow converts user queries into embeddings to perform semantic similarity searches, enhanced by keyword search and reranking, to retrieve relevant video segments. The implementation leverages services like Amazon Bedrock (Amazon Nova, Amazon Titan, Cohere Rerank), Amazon Rekognition, Amazon Transcribe, Amazon S3, AWS Step Functions, and Amazon OpenSearch Serverless to provide an efficient, serverless, and highly scalable solution for media and entertainment customers.",
+  "key_points": [
+    {
+      "aspect": "Problem Addressed",
+      "details": "Large video libraries requiring time-consuming manual search; need for natural language search based on scenes, actions, concepts, people, and objects, beyond traditional text search on transcriptions."
+    },
+    {
+      "aspect": "Solution Goal",
+      "details": "Enable content discovery, efficient archiving and retrieval, streamlined repurposing of video content through intelligent analysis of topics, entities, and context. Drives cost efficiency, productivity gains, and scalability for media and entertainment."
+    },
+    {
+      "aspect": "High-Level Architecture (Two Workflows)",
+      "details": "1. **Media Content Ingestion:** Upload video to S3 -> AI/ML services extract contextual info -> Embeddings created -> Stored in vector database. 2. **Media Search Workflow:** User query transformed into embedding -> Semantic search against vector database -> Retrieve similar content. Supports multimodal queries (text, image) and keyword search, with reranking for relevance."
+    },
+    {
+      "aspect": "Architecture Components (Overall)",
+      "components": [
+        "**Frontend:** Static web application hosted in Amazon S3, served by Amazon CloudFront (with OAC), authenticated by Amazon Cognito.",
+        "**API Layer:** Amazon API Gateway as entry point for frontend-backend communication (CRUD, workflow initiation).",
+        "**Ingestion Trigger & Queue:** Amazon S3 pre-signed URL upload triggers AWS Lambda, which puts tasks into Amazon SQS for concurrent processing.",
+        "**Orchestration:** AWS Step Functions orchestrates the media content ingestion workflow.",
+        "**Data Storage:** Amazon S3 (for videos, extracted frames), Amazon DynamoDB (media, profiling, task metadata), Amazon OpenSearch Serverless (vector database for embeddings and metadata).",
+        "**Monitoring:** Amazon CloudWatch and Amazon EventBridge for near real-time monitoring."
+      ]
+    },
+    {
+      "aspect": "AWS Services Used (Ingestion Workflow)",
+      "services": [
+        "**Amazon S3:** Stores original videos, extracted image frames, and transcription outputs.",
+        "**AWS Lambda:** Triggers from S3 upload, processes SQS messages, extracts image frames, and handles various processing steps.",
+        "**Amazon SQS:** Manages and buffers ingestion requests for concurrent processing.",
+        "**AWS Step Functions:** Orchestrates the multi-step, parallelized media content ingestion process.",
+        "**Amazon Transcribe:** Generates audio transcriptions for videos.",
+        "**Amazon Rekognition:** Detects shot segments (`start_segment_detection` API), performs celebrity recognition (`recognize_celebrities` API).",
+        "**Amazon Bedrock:** Accesses Foundation Models (FMs):",
+        "  - **Amazon Nova (e.g., Nova Pro v1:0):** Detects private figures/characters from text labels/titles in frames, generates comprehensive video shot descriptions from multiple frames, visual elements, and detected figures.",
+        "  - **Amazon Titan multimodal embeddings:** Generates image embeddings from video frames, used to propagate public/private figures across frames based on cosine similarity.",
+        "  - **Text embedding models:** Creates embeddings of shot descriptions and audio transcriptions.",
+        "**Amazon OpenSearch Serverless:** Stores vector embeddings (shot_image_vector, shot_desc_vector, shot_transcript_vector) and associated metadata for similarity search.",
+        "**Amazon DynamoDB:** Stores media, profiling, and task metadata."
+      ]
+    },
+    {
+      "aspect": "AWS Services Used (Search Workflow)",
+      "services": [
+        "**Amazon API Gateway:** Receives user search queries from the frontend.",
+        "**AWS Lambda:** Invoked by API Gateway, transforms user query into an embedding.",
+        "**Amazon Bedrock:** Accesses FMs:",
+        "  - **Multimodal embedding model:** Transforms user search queries (text or image) into embeddings.",
+        "  - **Cohere Rerank 3.5 (via Rerank API):** Improves search relevance and content ranking of retrieved results.",
+        "**Amazon OpenSearch Serverless:** Performs vector similarity search (KNN) using the query embedding to retrieve relevant video shot segments and their metadata. Supports hybrid search (semantic + keyword)."
+      ]
+    },
+    {
+      "aspect": "Ingestion Workflow - Detailed Steps",
+      "details": [
+        "1. Video upload to S3 initiates Lambda, which queues the task in SQS.",
+        "2. SQS subscriber (Lambda) triggers AWS Step Functions workflow.",
+        "3. Step Functions runs two parallel processes:",
+        "   a. Amazon Transcribe job for video transcription.",
+        "   b. Amazon Rekognition job for shot segment detection.",
+        "4. Upon completion of shot detection, a Lambda extracts image frames (e.g., 1 FPS) for each shot segment.",
+        "5. Each shot segment is processed in parallel using a Step Functions Map state:",
+        "   a. Amazon Rekognition `recognize_celebrities` detects public figures.",
+        "   b. Amazon Nova (Bedrock) identifies private figures from text labels/titles in frames.",
+        "   c. Amazon Titan multimodal embeddings (Bedrock) generate frame embeddings; cosine similarity propagates figure identities across similar frames.",
+        "   d. Amazon Nova (Bedrock) generates a comprehensive narrative description for the entire shot based on visual elements, detected figures, text, and objects.",
+        "6. Aggregated metadata (descriptions, transcripts, frame data) is used to create vector embeddings via Amazon Bedrock text and multimodal embedding models.",
+        "7. Vector embeddings and associated metadata are stored in Amazon OpenSearch Serverless."
+      ]
+    },
+    {
+      "aspect": "Search Workflow - Detailed Steps",
+      "details": [
+        "1. User submits text or image query through the web UI.",
+        "2. API Gateway endpoint triggers a Lambda function.",
+        "3. Lambda uses Amazon Bedrock's multimodal embedding model to convert the query into a vector embedding.",
+        "4. This query embedding is used for a semantic similarity search (KNN) against the Amazon OpenSearch Serverless vector database.",
+        "5. Supports hybrid search by combining semantic search with traditional keyword search across other fields.",
+        "6. Retrieved results are further processed by Cohere Rerank 3.5 (Bedrock) to improve relevance and ranking."
+      ]
+    },
+    {
+      "aspect": "Specific Technical Implementations & Code Snippets",
+      "details": [
+        "**Amazon Rekognition Shot Detection:** `start_segment_detection` with `SegmentTypes=['SHOT']` and filters.",
+        "**Amazon Rekognition Celebrity Detection:** `recognize_celebrities` API, filtering by `MatchConfidence`.",
+        "**Amazon Nova for Person Recognition:** Prompts Bedrock's `converse` API with frame image and text prompt to identify person names.",
+        "**Amazon Titan for Image Embeddings:** `invoke_model` API to get `inputImage` embedding, used for cosine similarity in OpenSearch search.",
+        "**Amazon Nova for Shot Description:** Prompts Bedrock's `converse` API with multiple frames and detected public/private figures to generate a detailed narrative.",
+        "**OpenSearch Serverless Index:** `knn_vector` field type, `dimension`, `nmslib` engine, `cosinesimil` space type, `ef_construction`, `m` parameters.",
+        "**OpenSearch Serverless Query:** `script_score` query using `knn_score` with `field`, `query_value`, `space_type`, and `boost` values for different vector fields (e.g., `shot_desc_vector`, `shot_transcript_vector`).",
+        "**Cohere Rerank:** `bedrock_agent_runtime.rerank` API call, passing query and `inlineDocumentSource` with `jsonDocument` and `modelArn` (`cohere.rerank-v3-5:0`)."
+      ]
+    },
+    {
+      "aspect": "Benefits for Media & Entertainment",
+      "details": "Automated workflow to extract metadata and contextual information from videos lacking tags, streamlining content creation, enhancing user experience, and gaining productivity in generating short-form video content."
+    }
+  ],
+  "relevant_links": [
+    "https://aws.amazon.com/bedrock/",
+    "https://aws.amazon.com/rekognition/",
+    "https://aws.amazon.com/transcribe/",
+    "https://aws.amazon.com/s3/",
+    "https://aws.amazon.com/lambda/",
+    "https://aws.amazon.com/sqs/",
+    "https://aws.amazon.com/step-functions/",
+    "https://aws.amazon.com/ai/generative-ai/nova/",
+    "https://aws.amazon.com/bedrock/amazon-models/titan/",
+    "https://aws.amazon.com/opensearch-service/features/serverless/",
+    "https://aws.amazon.com/dynamodb/",
+    "https://aws.amazon.com/cloudfront/",
+    "https://aws.amazon.com/cognito/",
+    "https://aws.amazon.com/api-gateway/",
+    "https://aws.amazon.com/cloudwatch/",
+    "https://aws.amazon.com/eventbridge/",
+    "https://aws.amazon.com/blogs/machine-learning/cohere-rerank-3-5-is-now-available-in-amazon-bedrock-through-rerank-api/",
+    "https://github.com/aws-samples/video-semantic-search-with-aws-ai-ml-services"
+  ],
+  "file_name": "aws_video_semantic_search_implementation.json"
+}
+```

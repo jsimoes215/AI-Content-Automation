@@ -1,0 +1,29 @@
+📄 Extracted from page: Retrieval  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/dnn/retrieval
+
+Extracted content:
+```json
+{
+  "title": "Retrieval | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/dnn/retrieval",
+  "summary": "This page details the retrieval phase in recommendation systems, focusing on how to identify relevant items for a user or a given item using embedding models. It explains that retrieval is fundamentally a nearest neighbor search problem in an embedding space. For large-scale systems, where exhaustive search is infeasible, it highlights two main strategies for efficiency and scalability: precomputing top candidates offline and using Approximate Nearest Neighbor (ANN) search techniques. Google's open-source ScaNN (Scalable Nearest Neighbors) is presented as a solution for efficient large-scale vector similarity search.",
+  "key_points": [
+    "Recommender systems use embedding models to represent users and items as vectors in a shared embedding space.",
+    "The core task of retrieval is to find item embeddings (Vj) that are 'close' to a query embedding (q) in this embedding space, essentially solving a nearest neighbor problem.",
+    "The query embedding can be statically known (e.g., from matrix factorization) or computed at serve time (e.g., by running a DNN model on a feature vector).",
+    "Items are recommended based on a similarity score s(q, Vj), returning the top k items.",
+    "Scalability is a major challenge for large corpora, as exhaustive scoring (finding exact nearest neighbors) is computationally expensive.",
+    "Two main strategies to improve efficiency for large-scale retrieval:",
+    "1.  **Offline Precomputation**: For statically known query embeddings, top candidates can be precomputed and stored offline. This is common for related-item recommendation scenarios.",
+    "2.  **Approximate Nearest Neighbor (ANN) Search**: This technique avoids exhaustive search to find approximate, but still highly relevant, nearest neighbors much faster.",
+    "Google provides an open-source tool called ScaNN (Scalable Nearest Neighbors) specifically designed for efficient, large-scale vector similarity search, serving as an implementation approach for ANN.",
+    "The principles apply to both user-item recommendations (finding items for a user) and item-item recommendations (finding similar items to a given item)."
+  ],
+  "relevant_links": [
+    "https://github.com/google-research/google-research/tree/master/scann",
+    "https://developers.google.com/machine-learning/recommendation/dnn/training",
+    "https://developers.google.com/machine-learning/recommendation/dnn/scoring"
+  ],
+  "file_name": "google_ml_retrieval_systems.json"
+}
+```

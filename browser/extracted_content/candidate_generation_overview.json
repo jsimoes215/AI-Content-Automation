@@ -1,0 +1,73 @@
+📄 Extracted from page: Candidate generation overview  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/overview/candidate-generation
+
+Extracted content:
+```json
+{
+  "title": "Candidate generation overview | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/overview/candidate-generation",
+  "summary": "This page provides an overview of candidate generation, the initial stage in recommendation systems responsible for identifying a set of relevant items given a query. It details two primary approaches: content-based filtering and collaborative filtering, both of which leverage embedding spaces to represent queries and items as vectors. The core technical mechanism relies on defining 'closeness' or similarity between these embeddings using various measures like cosine, dot product, and Euclidean distance. The document explains how each similarity measure works, compares their properties, and discusses the implications of choosing one over another, particularly regarding the influence of item popularity (embedding norm) on recommendations.",
+  "key_points": [
+    {
+      "concept": "Candidate Generation Goal",
+      "description": "The first stage of recommendation, where the system generates a set of relevant candidate items given a user query or context."
+    },
+    {
+      "concept": "Candidate Generation Approaches",
+      "methods": [
+        {
+          "name": "Content-based filtering",
+          "description": "Recommends items similar to what the user likes by using similarity between items. Example: if a user watches cat videos, the system recommends other animal videos."
+        },
+        {
+          "name": "Collaborative filtering",
+          "description": "Provides recommendations by using similarities between queries and items simultaneously. Example: if user A is similar to user B, and user B likes video 1, the system recommends video 1 to user A."
+        }
+      ]
+    },
+    {
+      "concept": "Embedding Space",
+      "details": [
+        "Both content-based and collaborative filtering map each item and query (or context) to an embedding vector in a common low-dimensional space E=Rd.",
+        "This space captures latent structure, placing similar items/queries close together.",
+        "The 'closeness' is defined by a similarity measure."
+      ]
+    },
+    {
+      "concept": "Similarity Measures",
+      "description": "Functions s:E×E→R that quantify the resemblance between a pair of embeddings. Recommendations are made by finding item embeddings 'x' that are close to a query 'q' (i.e., have high s(q,x)).",
+      "measures": [
+        {
+          "name": "Cosine Similarity",
+          "formula": "s(q,x) = cos(q,x)",
+          "description": "The cosine of the angle between the two vectors. Primarily considers direction."
+        },
+        {
+          "name": "Dot Product",
+          "formula": "s(q,x) = ⟨q,x⟩ = Σ(q_i * x_i)",
+          "alternative_formula": "s(q,x) = ||x|| ||q|| cos(q,x)",
+          "description": "If embeddings are normalized, dot product and cosine coincide. It is sensitive to the norm (magnitude) of the embeddings, meaning larger norms contribute to higher similarity."
+        },
+        {
+          "name": "Euclidean Distance",
+          "formula": "s(q,x) = ||q-x|| = [Σ(q_i - x_i)^2]^1/2",
+          "description": "The usual distance in Euclidean space. A smaller distance indicates higher similarity. When embeddings are normalized, the squared Euclidean distance is inversely related to the dot product/cosine (up to a constant)."
+        }
+      ]
+    },
+    {
+      "concept": "Comparison and Implications of Similarity Measures",
+      "details": [
+        "**Dot Product vs. Cosine**: Dot product is sensitive to the norm of the embedding; larger norms lead to higher similarity (for acute angles). This can lead to popular items (which often have large norms due to frequent updates) dominating recommendations.",
+        "**Managing Popularity Bias (Dot Product)**: If capturing popularity is desirable, dot product is suitable. However, to prevent popular items from dominating, variants like s(q,x) = ||q||^α ||x||^α cos(q,x) for α∈(0,1) can be used to reduce emphasis on norm.",
+        "**Impact of Rare Items**: Rarely updated items, if initialized with large norms, might be recommended over more relevant items. Careful embedding initialization and appropriate regularization are crucial to mitigate this.",
+        "**Ranking Differences**: The choice of similarity measure directly impacts the ranking of candidate items. For example, Item A might be highest by dot product (largest norm), Item C by cosine (smallest angle), and Item B by Euclidean distance (physically closest)."
+      ]
+    }
+  ],
+  "relevant_links": [
+    "http://projector.tensorflow.org/"
+  ],
+  "file_name": "candidate_generation_overview.json"
+}
+```

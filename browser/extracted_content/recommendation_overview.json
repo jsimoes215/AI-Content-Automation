@@ -1,0 +1,28 @@
+📄 Extracted from page: Recommendations: what and why?  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/overview
+
+Extracted content:
+```json
+{
+  "title": "Recommendations: what and why? | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/overview",
+  "summary": "This introductory page explains the fundamental concept and importance of machine learning-based recommendation systems. It defines recommendations as models that predict user preferences by analyzing similarities between items and past user interactions. The document outlines two primary types: 'homepage recommendations,' which are personalized based on individual user interests, and 'related item recommendations,' which suggest items similar to a specific one being viewed. The page emphasizes that recommendation systems are crucial for content discovery within vast digital libraries, such as Google Play and YouTube, helping users find content they might not actively search for. It highlights the significant impact of recommendations on user engagement, noting that they drive a substantial portion of app installs and video watch time. However, this particular page provides a high-level overview and does not delve into comprehensive technical details regarding system architecture, data flow, or the internal mechanisms of core components like candidate generation, scoring, and re-ranking, which are covered in other sections of the documentation.",
+  "key_points": [
+    "Recommendation models predict user preferences using machine learning by identifying similarities between items and analyzing user interaction history.",
+    "Two main types of recommendations are discussed: homepage recommendations (personalized to individual users) and related item recommendations (suggesting items similar to a specific one).",
+    "Recommendation systems are vital for content discovery in large digital platforms (e.g., Google Play, YouTube), helping users find content they might not otherwise search for.",
+    "Recommendations significantly influence user behavior and engagement, accounting for 40% of Google Play app installs and 60% of YouTube watch time.",
+    "This page serves as an introduction and does not include technical specifics on recommendation system architecture, data flow, candidate generation, scoring, or re-ranking mechanisms."
+  ],
+  "relevant_links": [
+    "https://developers.google.com/machine-learning/recommendation/overview/candidate-generation",
+    "https://developers.google.com/machine-learning/recommendation/dnn/retrieval",
+    "https://developers.google.com/machine-learning/recommendation/dnn/scoring",
+    "https://developers.google.com/machine-learning/recommendation/dnn/re-ranking",
+    "https://developers.google.com/machine-learning/recommendation/content-based/basics",
+    "https://developers.google.com/machine-learning/recommendation/collaborative/basics",
+    "https://developers.google.com/machine-learning/recommendation/dnn/softmax"
+  ],
+  "file_name": "recommendation_overview.json"
+}
+```

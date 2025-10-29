@@ -1,0 +1,91 @@
+{
+  "_source_id": 14,
+  "sources": {
+    "Content Library Management and Meta-Tagging Systems for Video Content": {
+      "https://www.fastpix.io/blog/use-cases-and-benefits-of-video-metadata": {
+        "id": 1,
+        "publisher": "FastPix",
+        "url": "https://www.fastpix.io/blog/use-cases-and-benefits-of-video-metadata",
+        "title": "In-depth guide to video metadata",
+        "info": "Comprehensive guide on video metadata benefits for SEO, management, and content discovery"
+      },
+      "https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/best-practices/metadata-best-practices": {
+        "id": 2,
+        "publisher": "Adobe",
+        "url": "https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/best-practices/metadata-best-practices",
+        "title": "Metadata management and best practices",
+        "info": "Best practices for metadata management from Adobe Experience Manager documentation"
+      },
+      "https://www.forasoft.com/blog/article/ai-content-recommendation-systems": {
+        "id": 3,
+        "publisher": "Forasoft",
+        "url": "https://www.forasoft.com/blog/article/ai-content-recommendation-systems",
+        "title": "AI Content Recommendation Systems: Personalized Video",
+        "info": "Technical guide on AI-driven content recommendation systems for video platforms"
+      },
+      "https://iptc.org/std/videometadatahub/userguide/": {
+        "id": 4,
+        "publisher": "IPTC",
+        "url": "https://iptc.org/std/videometadatahub/userguide/",
+        "title": "Video Metadata Hub User Guide",
+        "info": "Universal metadata schema for video content developed by IPTC"
+      },
+      "https://research.google.com/pubs/archive/45530.pdf": {
+        "id": 5,
+        "publisher": "Google Research",
+        "url": "https://research.google.com/pubs/archive/45530.pdf",
+        "title": "Deep Neural Networks for YouTube Recommendations",
+        "info": "Academic paper on deep learning approaches for video recommendation systems"
+      },
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC10642507/": {
+        "id": 6,
+        "publisher": "PMC/NIH",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10642507/",
+        "title": "An overview of video recommender systems: state-of-the-art",
+        "info": "Comprehensive overview of video recommendation system techniques and approaches"
+      },
+      "https://brandfolder.com/resources/DAM-best-practices/": {
+        "id": 7,
+        "publisher": "Brandfolder",
+        "url": "https://brandfolder.com/resources/DAM-best-practices/",
+        "title": "13 Key Digital Asset Management Best Practices for 2024",
+        "info": "Best practices for DAM implementation and video asset management workflows"
+      },
+      "https://www.cmswire.com/digital-asset-management/examining-19-enterprise-digital-asset-management-solutions/": {
+        "id": 8,
+        "publisher": "CMSWire",
+        "url": "https://www.cmswire.com/digital-asset-management/examining-19-enterprise-digital-asset-management-solutions/",
+        "title": "24 Enterprise Digital Asset Management Solutions Examined",
+        "info": "Analysis of enterprise DAM solutions and their video content management capabilities"
+      },
+      "https://arxiv.org/pdf/2308.08406": {
+        "id": 9,
+        "publisher": "ArXiv.org",
+        "url": "https://arxiv.org/pdf/2308.08406",
+        "title": "Content-based Recommendation Engine for Video Streaming Platform",
+        "info": "Technical implementation of TF-IDF vectorization, cosine similarity algorithms, and performance metrics for video recommendation systems with 90.9% precision, 83.3% recall"
+      },
+      "https://aws.amazon.com/blogs/media/video-semantic-search-with-ai-on-aws/": {
+        "id": 12,
+        "publisher": "Amazon Web Services",
+        "url": "https://aws.amazon.com/blogs/media/video-semantic-search-with-ai-on-aws/",
+        "title": "Video semantic search with AI on AWS",
+        "info": "Comprehensive AWS architecture for AI-powered video semantic search using Amazon Rekognition, Bedrock, OpenSearch, and multimodal embeddings with natural language query processing"
+      },
+      "https://pimcore.com/en/resources/insights/dam-implementation-best-practices": {
+        "id": 13,
+        "publisher": "Pimcore",
+        "url": "https://pimcore.com/en/resources/insights/dam-implementation-best-practices",
+        "title": "Digital Asset Management (DAM) Implementation Best Practices",
+        "info": "Enterprise DAM implementation strategies covering business alignment, workflow optimization, technical architecture, user adoption, and scalability planning"
+      },
+      "https://medium.com/@bugfreeai/system-design-designing-a-library-management-system-56b04a4edcf1": {
+        "id": 14,
+        "publisher": "Medium",
+        "url": "https://medium.com/@bugfreeai/system-design-designing-a-library-management-system-56b04a4edcf1",
+        "title": "Designing a Library Management System",
+        "info": "Comprehensive system design approach for library management including architecture, database design, and workflow considerations applicable to content libraries"
+      }
+    }
+  }
+}

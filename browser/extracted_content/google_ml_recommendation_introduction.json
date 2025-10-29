@@ -1,0 +1,36 @@
+📄 Extracted from page: Introduction  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation
+
+Extracted content:
+```json
+{
+  "title": "Introduction | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation",
+  "summary": "This page serves as the introduction to Google's 'Recommendation Systems' course, outlining its scope and objectives. It highlights the course's aim to expand knowledge of recommendation systems, covering different models including matrix factorization and deep neural networks. Key objectives for learners include understanding the purpose and components of recommendation systems (candidate generation, scoring, re-ranking), utilizing embeddings for item and query representation, and developing a technical understanding of candidate generation techniques. While this introductory page does not delve into the comprehensive technical details, it provides a structured overview and links to subsequent pages within the course where specific algorithms, implementation approaches, system architecture, and deep learning methods are explored in detail. Prerequisites for the course include familiarity with Google's Machine Learning Crash Course or equivalent knowledge, and basic linear algebra.",
+  "key_points": [
+    "Introduction to a comprehensive 'Recommendation Systems' course by Google for Developers.",
+    "Course objectives include understanding recommendation system purpose, components (candidate generation, scoring, re-ranking), and use of embeddings.",
+    "The course will cover advanced models such as matrix factorization and deep neural networks.",
+    "Prerequisites include foundational machine learning knowledge (e.g., ML Crash Course) and linear algebra.",
+    "The page acts as a table of contents, linking to dedicated sections that will provide detailed technical information on topics like content-based filtering, collaborative filtering, deep neural networks, and large-scale system considerations."
+  ],
+  "relevant_links": [
+    "https://developers.google.com/machine-learning/recommendation/overview",
+    "https://developers.google.com/machine-learning/recommendation/overview/terminology",
+    "https://developers.google.com/machine-learning/recommendation/overview/types",
+    "https://developers.google.com/machine-learning/recommendation/overview/candidate-generation",
+    "https://developers.google.com/machine-learning/recommendation/content-based/basics",
+    "https://developers.google.com/machine-learning/recommendation/content-based/summary",
+    "https://developers.google.com/machine-learning/recommendation/collaborative/basics",
+    "https://developers.google.com/machine-learning/recommendation/collaborative/matrix",
+    "https://developers.google.com/machine-learning/recommendation/collaborative/summary",
+    "https://developers.google.com/machine-learning/recommendation/dnn/softmax",
+    "https://developers.google.com/machine-learning/recommendation/dnn/training",
+    "https://developers.google.com/machine-learning/recommendation/dnn/retrieval",
+    "https://developers.google.com/machine-learning/recommendation/dnn/scoring",
+    "https://developers.google.com/machine-learning/recommendation/dnn/re-ranking",
+    "https://developers.google.com/machine-learning/recommendation/summary"
+  ],
+  "file_name": "google_ml_recommendation_introduction.json"
+}
+```

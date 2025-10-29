@@ -1,0 +1,56 @@
+📄 Extracted from page: Re-ranking  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/dnn/re-ranking
+
+Extracted content:
+```json
+{
+  "title": "Re-ranking | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/dnn/re-ranking",
+  "summary": "This page details re-ranking as the final stage in a recommendation system, where candidate items are adjusted based on additional criteria or constraints. It outlines two primary re-ranking approaches: using filters to remove candidates and transforming scores returned by the initial ranker. The discussion then delves into key factors often addressed during re-ranking: freshness, diversity, and fairness, providing solutions for each to improve the overall recommendation quality and user experience.",
+  "key_points": [
+    {
+      "section": "General Re-ranking Techniques",
+      "details": [
+        "Re-ranking is the final stage to consider additional criteria or constraints on candidates.",
+        "One approach involves using filters to remove undesirable candidates (e.g., training a model to detect and remove click-bait videos).",
+        "Another approach is manually transforming the scores returned by the ranker (e.g., adjusting scores based on video age to promote fresher content, or video length)."
+      ]
+    },
+    {
+      "section": "Freshness Optimization",
+      "goal": "Incorporate the latest usage information and new items to keep the model relevant.",
+      "solutions": [
+        "Re-run training as frequently as possible using warm-starting to reduce training time (e.g., warm-start embeddings for existing items in matrix factorization).",
+        "Create 'average' or clustered user embeddings to represent new users in matrix factorization models.",
+        "Utilize Deep Neural Networks (DNNs) like softmax or two-tower models, which can process feature vectors for queries or items not seen during training.",
+        "Add document or item age (e.g., video's age or time of last viewing) as a feature to promote newer content."
+      ]
+    },
+    {
+      "section": "Diversity Optimization",
+      "goal": "Prevent overly similar recommendations that lead to a poor or boring user experience.",
+      "solutions": [
+        "Train multiple candidate generators using different data sources or algorithms.",
+        "Train multiple rankers with varied objective functions.",
+        "Re-rank items based on genre or other metadata to ensure a broader range of recommendations."
+      ]
+    },
+    {
+      "section": "Fairness Considerations",
+      "goal": "Ensure the recommendation model treats all users fairly and avoids learning unconscious biases from training data.",
+      "solutions": [
+        "Include diverse perspectives in the design and development teams of the recommendation system.",
+        "Train machine learning models on comprehensive datasets; add auxiliary data when primary data is sparse (e.g., for under-represented categories).",
+        "Track key metrics (like accuracy and absolute error) across different demographics to actively monitor and identify biases.",
+        "Consider creating separate models specifically for underserved user groups to address their unique needs and prevent bias."
+      ]
+    }
+  ],
+  "relevant_links": [
+    "https://developers.google.com/machine-learning/recommendation/dnn/retrieval",
+    "https://developers.google.com/machine-learning/recommendation/dnn/scoring",
+    "https://developers.google.com/machine-learning/recommendation/summary"
+  ],
+  "file_name": "re_ranking_system_details.json"
+}
+```

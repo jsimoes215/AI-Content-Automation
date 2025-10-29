@@ -1,0 +1,33 @@
+📄 Extracted from page: Deep neural network models  |  Machine Learning  |  Google for Developers
+URL: https://developers.google.com/machine-learning/recommendation/dnn/softmax
+
+Extracted content:
+```json
+{
+  "title": "Deep neural network models | Machine Learning | Google for Developers",
+  "url": "https://developers.google.com/machine-learning/recommendation/dnn/softmax",
+  "summary": "This page details the application of deep neural network (DNN) models for recommendation systems, specifically focusing on the softmax-based approach. It highlights how DNNs overcome limitations of traditional matrix factorization by effectively incorporating side features and improving recommendation relevance. The softmax DNN frames recommendation as a multiclass prediction problem, outputting a probability distribution over all items. The architecture involves flexible input layers for various features, hidden layers with non-linear activations to capture complex relationships, and a softmax output layer. The model learns distinct query and item embeddings, with the query embedding derived from a nonlinear function of input features. The page also introduces the two-tower neural network architecture as an advancement, allowing for the learning of both query and item embeddings from their respective features through separate networks.",
+  "key_points": [
+    "Deep Neural Networks (DNNs) address limitations of matrix factorization, such as difficulty incorporating side features and limited relevance for popular items.",
+    "DNNs can use flexible input layers to incorporate diverse query and item features (dense like watch time, sparse like watch history, side features like age or country), improving recommendation relevance and capturing specific user interests.",
+    "The softmax DNN model treats recommendation as a multiclass prediction problem where the input is a user query and the output is a probability vector for interacting with each item in the corpus.",
+    "Model architecture includes hidden layers and non-linear activation functions (e.g., ReLU) to capture complex data relationships, with a trade-off between complexity/expressivity and training/serving cost.",
+    "The softmax layer maps a vector of scores (logits) from the last hidden layer's output (ψ(x)) to a probability distribution p̂ = h(ψ(x)Vᵀ).",
+    "The loss function, such as cross-entropy loss, compares the predicted probability distribution (p̂) with the ground truth (p), representing actual user interactions.",
+    "Softmax models learn query embeddings (ψ(x) ∈ ℝᵈ) as the output of the last hidden layer and item embeddings (Vⱼ ∈ ℝᵈ) as the weights connecting the last hidden layer to each output item, where the dot product ⟨ψ(x), Vⱼ⟩ serves as a similarity measure.",
+    "This DNN model generalizes matrix factorization by replacing the query-side learned embedding with a non-linear function ψ(⋅) that maps query features to an embedding.",
+    "Two-tower neural networks extend this concept by using separate neural networks for query features (x_query → ψ(x_query) ∈ ℝᵈ) and item features (x_item → ϕ(x_item) ∈ ℝᵈ), with the model output typically defined by the dot product ⟨ψ(x_query), ϕ(x_item)⟩, making it no longer a softmax model but a pairwise prediction model."
+  ],
+  "relevant_links": [
+    "https://developers.google.com/machine-learning/recommendation/dnn/training",
+    "https://developers.google.com/machine-learning/recommendation/dnn/retrieval",
+    "https://developers.google.com/machine-learning/recommendation/dnn/scoring",
+    "https://developers.google.com/machine-learning/recommendation/dnn/re-ranking",
+    "https://developers.google.com/machine-learning/recommendation",
+    "https://developers.google.com/machine-learning/advanced-courses",
+    "https://developers.google.com/machine-learning/glossary#softmax",
+    "https://developers.google.com/machine-learning/glossary#logits"
+  ],
+  "file_name": "google_ml_recommendation_dnn_softmax_model_details.json"
+}
+```
