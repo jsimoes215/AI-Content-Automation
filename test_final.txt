@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "/workspace/test_workflow.py", line 58, in <module>
+    job_id = result2['data']['job_id']
+             ~~~~~~~^^^^^^^^
+KeyError: 'data'
+================================================================================
+Testing AI Content Generation Workflow
+================================================================================
+
+1. Health Check...
+   Status: 200
+   Response: {'status': 'healthy', 'service': 'AI Content Automation API'}
+
+2. List Projects...
+   Status: 200
+   Projects: 6
+
+3. Create New Project...
+   Status: 200
+   Project ID: afd68b0f-cff2-4a62-9304-c0b39324a38e
+
+4. Generate Script...
+   Status: 200
+   Error: 'data'
+
+Test completed!

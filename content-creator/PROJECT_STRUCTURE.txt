@@ -1,0 +1,123 @@
+AI CONTENT AUTOMATION SYSTEM - PROJECT STRUCTURE
+================================================
+
+content-creator/
+├── api/                              [Existing AI Pipeline]
+│   ├── audio-processing/            - Audio & TTS processing
+│   ├── content-library/             - Scene storage manager
+│   ├── platform-adapters/           - Multi-platform adaptation
+│   ├── scripts/                     - Script generation
+│   └── video-generation/            - Video creation pipeline
+│
+├── backend/                          [NEW - FastAPI Backend]
+│   ├── database/
+│   │   ├── schema.sql               - SQLite database schema
+│   │   └── db.py                    - Database operations
+│   ├── main.py                      - FastAPI application
+│   └── requirements.txt             - Python dependencies
+│
+├── web-interface/                    [NEW - React Frontend]
+│   ├── public/                      - Static assets
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Dashboard.tsx        - Overview page
+│   │   │   ├── Projects.tsx         - Project management
+│   │   │   ├── ProjectDetail.tsx    - Real-time tracking
+│   │   │   ├── ContentLibrary.tsx   - Scene browser
+│   │   │   └── Analytics.tsx        - Performance metrics
+│   │   ├── lib/
+│   │   │   └── api.ts               - API client + WebSocket
+│   │   ├── App.tsx                  - Main application
+│   │   └── main.tsx                 - Entry point
+│   ├── .env                         - Environment config
+│   ├── package.json                 - Dependencies
+│   └── dist/                        - Production build
+│
+├── data/                             [NEW - Data Storage]
+│   ├── content_creator.db           - SQLite database
+│   └── generated-content/           - Media files
+│       ├── videos/
+│       ├── audio/
+│       └── thumbnails/
+│
+├── config/                           [Existing]
+│   └── settings.py                  - Configuration
+│
+├── tests/                            [Existing]
+│   ├── test_complete_pipeline.py
+│   └── test_platform_adapters.py
+│
+├── docs/                             [Existing Research]
+│   ├── system_architecture.md
+│   ├── database_schema.sql
+│   ├── api_specification.md
+│   └── platform_requirements_2025.md
+│
+├── SYSTEM_DOCUMENTATION.md           [NEW - Complete Guide]
+├── README_WEB_INTERFACE.md          [NEW - User Guide]
+├── QUICKSTART.md                    [NEW - Quick Start]
+├── DEPLOYMENT_SUMMARY.md            [NEW - Deployment Info]
+├── start.sh                         [NEW - Startup Script]
+└── README.md                        [Updated]
+
+DATABASE SCHEMA (SQLite)
+========================
+8 Tables:
+  1. projects           - Main project records
+  2. scripts            - Generated scripts
+  3. scenes             - Video scenes
+  4. generated_content  - Media files metadata
+  5. content_library    - Reusable scenes with tags
+  6. generation_jobs    - Background job tracking
+  7. performance_metrics - Analytics data
+  8. analytics          - Aggregated metrics
+
+FEATURES IMPLEMENTED
+====================
+✓ Project Management (Create, Read, Delete)
+✓ Real-time Progress Tracking (WebSocket)
+✓ Content Library (Tag-based Search)
+✓ Scene Management (Browse, Filter, Reuse)
+✓ Analytics Dashboard (Charts & Metrics)
+✓ Dark/Light Theme Toggle
+✓ Responsive Design
+✓ Background Task Processing
+✓ API Integration with Existing Pipeline
+
+TECHNOLOGY STACK
+================
+Frontend:
+  - React 18.3 + TypeScript
+  - Vite 6.0
+  - React Router 6
+  - Tailwind CSS 3.4
+  - Recharts
+  - Lucide React Icons
+  - WebSocket API
+
+Backend:
+  - FastAPI 0.109.0
+  - Python 3.10+
+  - Uvicorn ASGI Server
+  - SQLite3
+  - WebSockets
+  - Background Tasks
+
+Integration:
+  - Existing API pipeline in api/
+  - SimpleScriptGenerator
+  - Platform adapters
+
+ACCESS POINTS
+=============
+Local Development:
+  Frontend:  http://localhost:5173
+  Backend:   http://localhost:8000
+  API Docs:  http://localhost:8000/docs
+  WebSocket: ws://localhost:8000/ws
+
+Production Build:
+  Deployed:  https://7v9b5bhnkpx9.space.minimax.io
+  (Requires local backend to function)
+
+STATUS: FULLY OPERATIONAL ✓

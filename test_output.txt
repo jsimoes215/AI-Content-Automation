@@ -1,0 +1,21 @@
+================================================================================
+Testing AI Content Generation Workflow
+================================================================================
+
+1. Health Check...
+   Status: 200
+   Response: {'status': 'healthy', 'service': 'AI Content Automation API'}
+
+2. List Projects...
+   Status: 200
+   Projects: 3
+
+3. Create New Project...
+   Status: 200
+   Project ID: 89ae3030-db6f-4d3d-8447-69007bd4e5c5
+
+4. Generate Script...
+   Status: 404
+   Error: {"detail":"Not Found"}
+
+Test completed!
