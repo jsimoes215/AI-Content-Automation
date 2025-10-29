@@ -1,0 +1,48 @@
+{
+  "todos": {
+    "Coordinator": {
+      "1": {
+        "id": "1",
+        "content": "Research content creation workflows and platform requirements",
+        "details": "1. Research YouTube longform video requirements (length, format, thumbnails)\n2. Research TikTok/Instagram short-form requirements (vertical format, duration limits)\n3. Research social media text content best practices for X, LinkedIn\n4. Analyze video scene segmentation and timing strategies\n5. Document platform-specific content adaptation strategies",
+        "status": "pending",
+        "priority": "high"
+      },
+      "2": {
+        "id": "2",
+        "content": "Design system architecture and content pipeline",
+        "details": "1. Design script parsing and scene extraction logic\n2. Plan video generation workflow (script → scenes → video)\n3. Design audio pipeline (text-to-speech + background music)\n4. Plan content adaptation logic for different platforms\n5. Design file organization and output structure\n6. Create database schema for storing scripts and generated content",
+        "status": "pending",
+        "priority": "high"
+      },
+      "3": {
+        "id": "3",
+        "content": "Set up core automation pipeline with AI services",
+        "details": "1. Load required toolkits (audio_kit, video_kit, image_gen)\n2. Implement script parsing and scene extraction\n3. Create text-to-speech integration for voiceovers\n4. Integrate background music generation/selection\n5. Implement video generation from scenes\n6. Create file management system for outputs",
+        "status": "pending",
+        "priority": "high"
+      },
+      "4": {
+        "id": "4",
+        "content": "Build platform-specific content generators",
+        "details": "1. Create YouTube longform video processor (combine scenes, optimize for duration)\n2. Build TikTok/Instagram short-form extractor (select best scenes, create vertical format)\n3. Implement text content generator for social media posts\n4. Create thumbnail generation for video content\n5. Add captions/subtitles generation capability",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "5": {
+        "id": "5",
+        "content": "Create user interface and workflow management",
+        "details": "1. Build web interface for script input and content generation\n2. Create progress tracking and status updates\n3. Implement preview functionality for generated content\n4. Add download/batch export features\n5. Create content library and organization system",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "6": {
+        "id": "6",
+        "content": "Test system and optimize content quality",
+        "details": "1. Test with sample scripts across different content types\n2. Optimize audio quality and synchronization\n3. Fine-tune video generation parameters\n4. Test content adaptation across platforms\n5. Implement quality assurance checks\n6. Create user documentation and usage examples",
+        "status": "pending",
+        "priority": "low"
+      }
+    }
+  }
+}
