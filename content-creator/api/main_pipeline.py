@@ -16,6 +16,7 @@ from api.scripts.script_generator import ScriptGenerator, Script
 from api.audio_processing.audio_pipeline import AudioPipeline, AudioMix
 from api.video_generation.video_pipeline import VideoGenerationPipeline, VideoComposition
 from api.content_library.library_manager import ContentLibraryManager, SceneMetadata, SearchQuery
+from api.sentiment_analysis import SentimentAnalysisPipeline, SentimentAnalysisPipelineFactory
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -64,6 +65,7 @@ class ContentCreationPipeline:
         self.audio_pipeline = None  # Will be initialized per request
         self.video_pipeline = None  # Will be initialized per request
         self.content_library = ContentLibraryManager(f"{project_root}/content-library")
+        self.sentiment_pipeline = SentimentAnalysisPipelineFactory.get_pipeline()
         
         # Processing statistics
         self.stats = {
