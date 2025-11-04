@@ -1,0 +1,1167 @@
+openapi: 3.0.3
+info:
+  title: Bulk Operations API
+  description: |
+    The Bulk Operations API provides a scalable, secure, and evolvable RESTful interface for managing large-scale content generation workflows. It supports batch processing, real-time progress tracking, and multi-tenant isolation for enterprise-grade operations.
+    
+    ## Key Features
+    
+    - **Bulk Job Management**: Create and monitor large-scale content generation workflows
+    - **Real-time Progress**: WebSocket-based progress tracking and state updates
+    - **Google Sheets Integration**: Use spreadsheets as data sources for batch operations
+    - **Multi-tenant Security**: Built-in isolation and authorization
+    - **Idempotent Operations**: Safe retry mechanisms for job creation
+    - **Rate Limiting**: Configurable per-tenant rate limits and quotas
+    
+    ## Authentication
+    
+    All endpoints require JWT authentication via Bearer token:
+    ```
+    Authorization: Bearer <jwt_token>
+    ```
+    
+    ### Required Scopes
+    - `jobs:read` - Query job status and lists
+    - `jobs:write` - Create and control jobs
+    - `sheets:connect` - Connect Google Sheets
+    - `videos:read` - List and fetch video artifacts
+    
+    ## Base URL
+    
+    - Development: `https://api.dev.contentcreator.com/api/v1`
+    - Production: `https://api.contentcreator.com/api/v1`
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@contentcreator.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.contentcreator.com/api/v1
+    description: Production server
+  - url: https://api.dev.contentcreator.com/api/v1
+    description: Development server
+
+security:
+  - BearerAuth: []
+  - JWTAuth: []
+
+paths:
+  /bulk-jobs:
+    get:
+      tags:
+        - Bulk Jobs
+      summary: List bulk jobs
+      description: Retrieve a paginated list of bulk jobs for the authenticated tenant
+      operationId: listBulkJobs
+      parameters:
+        - name: page_token
+          in: query
+          description: Cursor for pagination
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 200
+            default: 50
+        - name: state
+          in: query
+          description: Filter by job state
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [pending, running, pausing, paused, completing, completed, canceling, canceled, failed]
+        - name: sort
+          in: query
+          description: Sort field
+          schema:
+            type: string
+            enum: [created_at, updated_at, percent_complete]
+            default: created_at
+        - name: order
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: created_after
+          in: query
+          description: ISO 8601 timestamp filter
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: ISO 8601 timestamp filter
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: List of bulk jobs
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per window
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: Remaining requests in current window
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: Time when rate limit resets (Unix timestamp)
+              schema:
+                type: integer
+            X-RateLimit-Window:
+              description: Rate limit window in seconds
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkJobListResponse'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      tags:
+        - Bulk Jobs
+      summary: Create bulk job
+      description: Create a new bulk job for processing content generation tasks from a Google Sheet
+      operationId: createBulkJob
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          description: Unique identifier for idempotent job creation
+          required: false
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkJobCreateRequest'
+            examples:
+              basic_job:
+                summary: Basic job creation
+                value:
+                  title: "Spring Campaign Video Generation"
+                  priority: "normal"
+                  processing_deadline_ms: 7200000
+                  input_source:
+                    type: "sheet"
+                    sheet_id: "1A2B3C4D5E6F7G8H9I0J"
+                    range: "A1:Z1000"
+                  output:
+                    format: "mp4"
+                    video_codec: "h264"
+                    audio_codec: "aac"
+                    resolution: "1080p"
+                    output_bucket: "campaign-videos"
+                  template:
+                    template_id: "tpl_modern_promotional"
+                    overrides:
+                      style: "modern"
+                      voice: "professional_female"
+              high_priority_job:
+                summary: High priority job
+                value:
+                  title: "Urgent Product Launch Videos"
+                  priority: "high"
+                  processing_deadline_ms: 3600000
+                  input_source:
+                    type: "sheet"
+                    sheet_id: "1A2B3C4D5E6F7G8H9I0J"
+                    range: "A1:Z500"
+                  output:
+                    format: "mp4"
+                    video_codec: "h264"
+                    audio_codec: "aac"
+                    resolution: "1080p"
+                    output_bucket: "launch-videos"
+                  template:
+                    template_id: "tpl_urgent_launch"
+                    overrides:
+                      style: "high_impact"
+                      voice: "energetic_male"
+      responses:
+        '201':
+          description: Job created successfully
+          headers:
+            Location:
+              description: URL of the created job
+              schema:
+                type: string
+                format: uri
+            X-Idempotency-Key:
+              description: The idempotency key used
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkJob'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/IdempotencyConflict'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /bulk-jobs/{id}:
+    get:
+      tags:
+        - Bulk Jobs
+      summary: Get job details
+      description: Retrieve detailed information about a specific bulk job
+      operationId: getBulkJob
+      parameters:
+        - name: id
+          in: path
+          description: Job identifier
+          required: true
+          schema:
+            type: string
+            pattern: '^job_[A-Za-z0-9]+$'
+      responses:
+        '200':
+          description: Job details
+          headers:
+            ETag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            X-Correlation-Id:
+              description: Correlation ID for request tracing
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkJob'
+              examples:
+                running_job:
+                  summary: Running job example
+                  value:
+                    id: "job_01HABCDEF0123456789"
+                    state: "running"
+                    percent_complete: 45.2
+                    items_total: 1000
+                    items_completed: 452
+                    items_failed: 8
+                    items_skipped: 5
+                    items_canceled: 0
+                    items_pending: 535
+                    eta_ms: 1800000
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /bulk-jobs/{id}/videos:
+    get:
+      tags:
+        - Videos
+      summary: List job videos
+      description: Retrieve a paginated list of videos produced by the specified job
+      operationId: listJobVideos
+      parameters:
+        - name: id
+          in: path
+          description: Job identifier
+          required: true
+          schema:
+            type: string
+            pattern: '^job_[A-Za-z0-9]+$'
+        - name: page_token
+          in: query
+          description: Cursor for pagination
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 200
+            default: 50
+        - name: state
+          in: query
+          description: Filter by video state
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [pending, processing, completed, failed, skipped, canceled]
+        - name: sort
+          in: query
+          description: Sort field
+          schema:
+            type: string
+            enum: [created_at, updated_at, percent_complete]
+            default: created_at
+        - name: order
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+        - name: expand
+          in: query
+          description: Additional data to include
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [artifacts, errors, input_row]
+      responses:
+        '200':
+          description: List of videos
+          headers:
+            ETag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            X-Correlation-Id:
+              description: Correlation ID for request tracing
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoListResponse'
+              examples:
+                completed_videos:
+                  summary: Completed videos list
+                  value:
+                    data:
+                      - id: "vid_01HXYZ1234567890"
+                        state: "completed"
+                        percent_complete: 100.0
+                        row_index: 1
+                        title: "Product Demo Video 1"
+                        artifacts:
+                          - type: "video"
+                            content_type: "video/mp4"
+                            size: 5242880
+                            url: "https://storage.example.com/video1.mp4"
+                        input_row:
+                          A: "Product Demo"
+                          B: "Welcome to our product demonstration"
+                          C: "https://assets.example.com/demo1.png"
+                    page:
+                      next_page_token: "token_abc123"
+                      page_size: 50
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /sheets/connect:
+    post:
+      tags:
+        - Sheets
+      summary: Connect Google Sheet
+      description: Register and validate access to a Google Sheet for use as job input source
+      operationId: connectSheet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SheetConnectionRequest'
+            examples:
+              basic_connection:
+                summary: Basic sheet connection
+                value:
+                  sheet_id: "1A2B3C4D5E6F7G8H9I0J"
+                  range: "A1:Z1000"
+                  share_permissions: "read"
+              wide_range:
+                summary: Large range connection
+                value:
+                  sheet_id: "1A2B3C4D5E6F7G8H9I0J"
+                  range: "A1:AA5000"
+                  share_permissions: "read"
+      responses:
+        '200':
+          description: Sheet connected successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SheetConnection'
+              examples:
+                connected_sheet:
+                  summary: Connected sheet example
+                  value:
+                    sheet_id: "1A2B3C4D5E6F7G8H9I0J"
+                    range: "A1:Z1000"
+                    status: "connected"
+                    last_validated_at: "2025-11-05T00:52:00Z"
+                    sample:
+                      row_count: 5
+                      columns: ["A", "B", "C", "D", "E"]
+                      preview:
+                        - ["Intro", "Welcome video", "https://image1.jpg", "5 min", "professional"]
+                        - ["Features", "Main content", "https://image2.jpg", "10 min", "casual"]
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    BulkJobCreateRequest:
+      type: object
+      required:
+        - input_source
+        - output
+        - template
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          description: Human-readable job title
+          example: "Spring Campaign Video Generation"
+        priority:
+          type: string
+          enum: [low, normal, high]
+          default: normal
+          description: Job priority level
+        callback_url:
+          type: string
+          format: uri
+          description: Webhook URL for job completion notifications
+          example: "https://client.example.com/webhooks/job-complete"
+        processing_deadline_ms:
+          type: integer
+          minimum: 0
+          maximum: 86400000
+          description: Maximum processing time in milliseconds (max 24 hours)
+          example: 7200000
+        input_source:
+          $ref: '#/components/schemas/InputSource'
+        output:
+          $ref: '#/components/schemas/OutputConfig'
+        template:
+          $ref: '#/components/schemas/TemplateConfig'
+        idempotency_key:
+          type: string
+          format: uuid
+          description: Client-provided idempotency key (alternative to header)
+          example: "2f1b3e9b-5c2d-4a5a-9b1e-0e5a8f3a2b1c"
+
+    BulkJob:
+      type: object
+      required:
+        - id
+        - tenant_id
+        - state
+      properties:
+        id:
+          type: string
+          pattern: '^job_[A-Za-z0-9]+$'
+          description: Job identifier
+          example: "job_01HABCDEF0123456789"
+        tenant_id:
+          type: string
+          description: Tenant identifier for multi-tenant isolation
+          example: "tenant_7x9y"
+        state:
+          type: string
+          enum: [pending, running, pausing, paused, completing, completed, canceling, canceled, failed]
+          description: Current job state
+          example: "running"
+        percent_complete:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Overall completion percentage
+          example: 45.2
+        items_total:
+          type: integer
+          minimum: 0
+          description: Total number of items to process
+          example: 1000
+        items_completed:
+          type: integer
+          minimum: 0
+          description: Number of successfully completed items
+          example: 452
+        items_failed:
+          type: integer
+          minimum: 0
+          description: Number of failed items
+          example: 8
+        items_skipped:
+          type: integer
+          minimum: 0
+          description: Number of skipped items
+          example: 5
+        items_canceled:
+          type: integer
+          minimum: 0
+          description: Number of canceled items
+          example: 0
+        items_pending:
+          type: integer
+          minimum: 0
+          description: Number of items still pending processing
+          example: 535
+        time_to_start_ms:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Time elapsed since job creation until first item started processing
+          example: 2100
+        time_processing_ms:
+          type: integer
+          minimum: 0
+          description: Cumulative processing time for all completed items
+          example: 60000
+        average_duration_ms_per_item:
+          type: number
+          minimum: 0
+          nullable: true
+          description: Average processing time per completed item
+          example: 280
+        eta_ms:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: Estimated time remaining in milliseconds
+          example: 2198000
+        rate_limited:
+          type: boolean
+          description: Whether rate limiting is currently constraining throughput
+          example: false
+        processing_deadline_ms:
+          type: integer
+          minimum: 0
+          description: Maximum allowed processing time
+          example: 7200000
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Webhook URL for notifications
+          example: "https://client.example.com/webhooks/job-complete"
+        created_at:
+          type: string
+          format: date-time
+          description: Job creation timestamp
+          example: "2025-11-05T00:52:13Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2025-11-05T00:55:40Z"
+        idempotency_key:
+          type: string
+          format: uuid
+          nullable: true
+          description: Idempotency key used for job creation
+          example: "2f1b3e9b-5c2d-4a5a-9b1e-0e5a8f3a2b1c"
+        sheet_source:
+          $ref: '#/components/schemas/SheetSource'
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'
+
+    BulkJobListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required: [id, state, title, percent_complete, items_total, items_completed, created_at, updated_at]
+            properties:
+              id:
+                type: string
+                pattern: '^job_[A-Za-z0-9]+$'
+              state:
+                type: string
+                enum: [pending, running, pausing, paused, completing, completed, canceling, canceled, failed]
+              title:
+                type: string
+              percent_complete:
+                type: number
+                minimum: 0
+                maximum: 100
+              items_total:
+                type: integer
+                minimum: 0
+              items_completed:
+                type: integer
+                minimum: 0
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+        page:
+          $ref: '#/components/schemas/PageInfo'
+
+    InputSource:
+      type: object
+      required:
+        - type
+        - sheet_id
+        - range
+      properties:
+        type:
+          type: string
+          enum: [sheet]
+          description: Source type
+          example: "sheet"
+        sheet_id:
+          type: string
+          minLength: 10
+          maxLength: 200
+          description: Google Sheets identifier
+          example: "1A2B3C4D5E6F7G8H9I0J"
+        range:
+          type: string
+          description: Cell range in A1 notation
+          example: "A1:Z1000"
+
+    OutputConfig:
+      type: object
+      required:
+        - format
+        - video_codec
+        - audio_codec
+        - resolution
+        - output_bucket
+      properties:
+        format:
+          type: string
+          enum: [mp4, mov, webm]
+          description: Video container format
+          example: "mp4"
+        video_codec:
+          type: string
+          enum: [h264, h265, vp9]
+          description: Video codec
+          example: "h264"
+        audio_codec:
+          type: string
+          enum: [aac, opus]
+          description: Audio codec
+          example: "aac"
+        resolution:
+          type: string
+          enum: [720p, 1080p, 4k]
+          description: Video resolution
+          example: "1080p"
+        output_bucket:
+          type: string
+          description: Storage bucket for output files
+          example: "campaign-videos"
+
+    TemplateConfig:
+      type: object
+      required:
+        - template_id
+      properties:
+        template_id:
+          type: string
+          minLength: 1
+          description: Template identifier
+          example: "tpl_modern_promotional"
+        overrides:
+          type: object
+          additionalProperties: true
+          description: Template-specific configuration overrides
+          example:
+            style: "modern"
+            voice: "professional_female"
+            background_music: "upbeat_corporate"
+
+    SheetSource:
+      type: object
+      properties:
+        sheet_id:
+          type: string
+          description: Google Sheets identifier
+          example: "1A2B3C4D5E6F7G8H9I0J"
+        range:
+          type: string
+          description: Cell range in A1 notation
+          example: "A1:Z1000"
+        connected_at:
+          type: string
+          format: date-time
+          description: When the sheet was connected
+          example: "2025-11-05T00:51:10Z"
+
+    SheetConnectionRequest:
+      type: object
+      required:
+        - sheet_id
+        - range
+        - share_permissions
+      properties:
+        sheet_id:
+          type: string
+          minLength: 10
+          maxLength: 200
+          description: Google Sheets identifier
+          example: "1A2B3C4D5E6F7G8H9I0J"
+        range:
+          type: string
+          description: Cell range in A1 notation
+          example: "A1:Z1000"
+        share_permissions:
+          type: string
+          enum: [read]
+          description: Required permission level
+          example: "read"
+
+    SheetConnection:
+      type: object
+      required:
+        - sheet_id
+        - range
+        - tenant_id
+        - status
+        - last_validated_at
+        - sample
+      properties:
+        sheet_id:
+          type: string
+          description: Google Sheets identifier
+          example: "1A2B3C4D5E6F7G8H9I0J"
+        range:
+          type: string
+          description: Cell range in A1 notation
+          example: "A1:Z1000"
+        tenant_id:
+          type: string
+          description: Tenant identifier
+          example: "tenant_7x9y"
+        status:
+          type: string
+          enum: [connected]
+          description: Connection status
+          example: "connected"
+        last_validated_at:
+          type: string
+          format: date-time
+          description: Last validation timestamp
+          example: "2025-11-05T00:52:00Z"
+        sample:
+          type: object
+          required: [row_count, columns]
+          properties:
+            row_count:
+              type: integer
+              description: Number of sample rows fetched
+              example: 5
+            columns:
+              type: array
+              items:
+                type: string
+              description: Column letters in the sample range
+              example: ["A", "B", "C", "D", "E"]
+            preview:
+              type: array
+              items:
+                type: array
+                items:
+                  type: string
+              description: Sample data rows
+              example: [
+                ["Intro", "Welcome video", "https://image1.jpg", "5 min", "professional"],
+                ["Features", "Main content", "https://image2.jpg", "10 min", "casual"]
+              ]
+
+    Video:
+      type: object
+      required:
+        - id
+        - job_id
+        - state
+      properties:
+        id:
+          type: string
+          pattern: '^vid_[A-Za-z0-9]+$'
+          description: Video identifier
+          example: "vid_01HXYZ1234567890"
+        job_id:
+          type: string
+          pattern: '^job_[A-Za-z0-9]+$'
+          description: Parent job identifier
+          example: "job_01HABCDEF0123456789"
+        state:
+          type: string
+          enum: [pending, processing, completed, failed, skipped, canceled]
+          description: Video processing state
+          example: "completed"
+        percent_complete:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Processing completion percentage
+          example: 100.0
+        row_index:
+          type: integer
+          minimum: 0
+          description: Source row index in the input sheet
+          example: 1
+        title:
+          type: string
+          description: Video title or description
+          example: "Product Demo Video 1"
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+          example: "2025-11-05T00:53:45Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2025-11-05T00:54:12Z"
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'
+          description: Generated file artifacts
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessingError'
+          description: Processing errors (if any)
+        input_row:
+          type: object
+          additionalProperties: true
+          description: Source data from input sheet row
+
+    VideoListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Video'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+
+    Artifact:
+      type: object
+      required:
+        - type
+        - content_type
+        - size
+        - url
+      properties:
+        type:
+          type: string
+          enum: [manifest, video, thumbnail, report, caption, metadata]
+          description: Artifact type
+          example: "video"
+        content_type:
+          type: string
+          description: MIME content type
+          example: "video/mp4"
+        size:
+          type: integer
+          minimum: 0
+          description: File size in bytes
+          example: 5242880
+        url:
+          type: string
+          format: uri
+          description: Download URL for the artifact
+          example: "https://storage.example.com/video1.mp4"
+
+    ProcessingError:
+      type: object
+      required:
+        - error_code
+        - error_message
+        - error_class
+        - occurred_at
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable error code
+          example: "asset_download_failed"
+        error_message:
+          type: string
+          description: Human-readable error description
+          example: "Unable to download asset"
+        error_class:
+          type: string
+          description: Error classification
+          example: "UpstreamError"
+        occurred_at:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: "2025-11-05T00:54:02Z"
+
+    PageInfo:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+          nullable: true
+          description: Cursor for next page (null if no more pages)
+          example: "eyJvZmZzZXQiOjUwLCJzdGFydF9hZnRlciI6InZpZF8wMUhYWFgxMjM0NTY3ODkwIn0="
+        page_size:
+          type: integer
+          description: Number of items in this page
+          example: 50
+
+    ErrorEnvelope:
+      type: object
+      required:
+        - error_code
+        - error_message
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable error code
+          example: "validation_error"
+        error_message:
+          type: string
+          description: Human-readable error description
+          example: "Invalid request parameters"
+        error_class:
+          type: string
+          description: Error classification for programmatic handling
+          example: "ValidationError"
+        detail:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+          example:
+            field: "input_source.range"
+            issue: "Invalid range format: A1:Z0"
+
+  responses:
+    InvalidRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "invalid_request"
+            error_message: "Invalid range format: A1:Z0"
+            error_class: "ValidationError"
+            detail:
+              field: "input_source.range"
+              issue: "End row must be greater than start row"
+
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "unauthorized"
+            error_message: "Missing or invalid authentication token"
+            error_class: "AuthenticationError"
+
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "forbidden"
+            error_message: "Insufficient permissions to access this resource"
+            error_class: "AuthorizationError"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "not_found"
+            error_message: "Job job_01HNOTEXIST not found"
+            error_class: "ResourceNotFound"
+
+    Conflict:
+      description: State conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "conflict"
+            error_message: "State transition not allowed: paused -> pending"
+            error_class: "StateTransitionError"
+
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "validation_error"
+            error_message: "Template not found"
+            error_class: "ResourceNotFound"
+            detail:
+              field: "template.template_id"
+              issue: "Template tpl_nonexistent does not exist"
+
+    RateLimited:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying
+          schema:
+            type: integer
+            example: 60
+        X-RateLimit-Limit:
+          description: Request limit per window
+          schema:
+            type: integer
+            example: 10
+        X-RateLimit-Remaining:
+          description: Remaining requests in current window
+          schema:
+            type: integer
+            example: 0
+        X-RateLimit-Reset:
+          description: Time when rate limit resets (Unix timestamp)
+          schema:
+            type: integer
+            example: 1641234567
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "rate_limited"
+            error_message: "Request rate limit exceeded"
+            error_class: "RateLimitError"
+
+    IdempotencyConflict:
+      description: Idempotency key conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "idempotency_conflict"
+            error_message: "Idempotency key conflicts with a different resource"
+            error_class: "IdempotencyError"
+
+    InternalError:
+      description: Internal server error
+      headers:
+        X-Correlation-Id:
+          description: Correlation ID for request tracing
+          schema:
+            type: string
+            example: "8b2f-4a1c"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "internal_error"
+            error_message: "An unexpected error occurred"
+            error_class: "InternalError"
+
+    ServiceUnavailable:
+      description: Service temporarily unavailable
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying
+          schema:
+            type: integer
+            example: 120
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            error_code: "service_unavailable"
+            error_message: "Service temporarily unavailable"
+            error_class: "TemporaryOutage"
+
+tags:
+  - name: Bulk Jobs
+    description: Job creation, monitoring, and management
+  - name: Videos
+    description: Video artifact retrieval and listing
+  - name: Sheets
+    description: Google Sheets integration and connectivity

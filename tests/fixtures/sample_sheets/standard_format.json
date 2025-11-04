@@ -1,0 +1,51 @@
+{
+  "sheet_name": "Standard Video Ideas",
+  "format_type": "STANDARD",
+  "description": "Standard format with essential video idea fields",
+  "data": [
+    [
+      "title",
+      "description",
+      "target_audience",
+      "tags",
+      "tone",
+      "duration_estimate",
+      "platform",
+      "script_type",
+      "call_to_action"
+    ],
+    [
+      "5 Tips for Better Sleep",
+      "Learn evidence-based strategies to improve your sleep quality including sleep hygiene, bedroom environment optimization, and relaxation techniques.",
+      "general",
+      "health, wellness, sleep, lifestyle",
+      "educational",
+      "3 minutes",
+      "youtube",
+      "tutorial",
+      "Subscribe for more health tips"
+    ],
+    [
+      "Quick Morning Workout Routine",
+      "A 10-minute high-intensity workout that requires no equipment. Perfect for busy professionals who want to stay fit.",
+      "professionals",
+      "fitness, workout, morning routine, health",
+      "motivational",
+      "10 minutes",
+      "instagram",
+      "demo",
+      "Try this routine and share your results"
+    ],
+    [
+      "Investment Basics for Beginners",
+      "Understanding stocks, bonds, ETFs, and mutual funds. Learn the fundamental concepts every beginner investor should know.",
+      "beginners",
+      "investing, finance, stocks, beginner",
+      "educational",
+      "8 minutes",
+      "youtube",
+      "explainer",
+      "Start investing today with our recommended brokers"
+    ]
+  ]
+}

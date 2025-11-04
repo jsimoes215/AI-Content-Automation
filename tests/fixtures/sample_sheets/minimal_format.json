@@ -1,0 +1,27 @@
+{
+  "sheet_name": "Minimal Video Ideas",
+  "format_type": "MINIMAL",
+  "description": "Minimal format with only essential fields for quick entry",
+  "data": [
+    [
+      "title",
+      "description",
+      "target_audience"
+    ],
+    [
+      "Quick Energy Boost Tips",
+      "Simple ways to increase your energy levels naturally without caffeine or supplements.",
+      "general"
+    ],
+    [
+      "Budget-Friendly Home Office Setup",
+      "How to create a productive workspace at home without breaking the bank.",
+      "professionals"
+    ],
+    [
+      "Basic Social Media Strategy",
+      "The fundamental steps every business should take to build their social media presence.",
+      "entrepreneurs"
+    ]
+  ]
+}

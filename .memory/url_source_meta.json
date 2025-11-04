@@ -1,5 +1,5 @@
 {
-  "_source_id": 14,
+  "_source_id": 42,
   "sources": {
     "Content Library Management and Meta-Tagging Systems for Video Content": {
       "https://www.fastpix.io/blog/use-cases-and-benefits-of-video-metadata": {
@@ -85,6 +85,198 @@
         "url": "https://medium.com/@bugfreeai/system-design-designing-a-library-management-system-56b04a4edcf1",
         "title": "Designing a Library Management System",
         "info": "Comprehensive system design approach for library management including architecture, database design, and workflow considerations applicable to content libraries"
+      }
+    },
+    "Google Sheets API Cost Optimization": {
+      "https://developers.google.com/workspace/sheets/api/guides/performance": {
+        "id": 15,
+        "publisher": "Google Developers",
+        "url": "https://developers.google.com/workspace/sheets/api/guides/performance",
+        "title": "Improve performance | Google Sheets",
+        "info": "Official Google documentation on performance optimization techniques including gzip compression, partial resource responses, and minimizing API calls. Provides technical specifications for reducing bandwidth and processing overhead."
+      },
+      "https://developers.google.com/workspace/sheets/api/limits": {
+        "id": 16,
+        "publisher": "Google Developers",
+        "url": "https://developers.google.com/workspace/sheets/api/limits",
+        "title": "Usage limits | Google Sheets",
+        "info": "Official Google documentation on API usage limits, quotas, and pricing structure. Details that Google Sheets API is free with specific per-minute limits (300 read/write requests per minute per project, 60 per user). No additional costs for exceeding quotas - just rate limiting."
+      },
+      "https://docs.cloud.google.com/apis/docs/monitoring": {
+        "id": 17,
+        "publisher": "Google Cloud",
+        "url": "https://docs.cloud.google.com/apis/docs/monitoring",
+        "title": "Monitoring API usage - Google Cloud Documentation",
+        "info": "Comprehensive guide to monitoring Google API usage, tracking request counts, errors, latencies, and quota consumption. Details metrics available through Cloud Monitoring for cost analysis and optimization."
+      }
+    },
+    "Google Sheets API Permissions Research": {
+      "https://developers.google.com/workspace/sheets/api/scopes": {
+        "id": 22,
+        "publisher": "Google for Developers",
+        "url": "https://developers.google.com/workspace/sheets/api/scopes",
+        "title": "Choose Google Sheets API scopes",
+        "info": "Complete list of Google Sheets API OAuth2 scopes including spreadsheets.readonly (read-only), spreadsheets (read-write), drive.file (per-file access), drive.readonly, and drive (all files), with security implications and verification requirements"
+      },
+      "https://developers.google.com/identity/protocols/oauth2/resources/best-practices": {
+        "id": 19,
+        "publisher": "Google for Developers",
+        "url": "https://developers.google.com/identity/protocols/oauth2/resources/best-practices",
+        "title": "OAuth 2.0 Best Practices",
+        "info": "Comprehensive security best practices for OAuth2 implementation including client credential handling, token management, incremental authorization, and scope selection principles."
+      },
+      "https://support.google.com/googleapi/answer/6158849": {
+        "id": 24,
+        "publisher": "Google Help",
+        "url": "https://support.google.com/googleapi/answer/6158849",
+        "title": "Setting up OAuth 2.0 - API Console Help",
+        "info": "Complete setup instructions for OAuth2 client IDs, consent screen configuration, scope management, and security considerations including sensitive scopes, verification processes, and service account setup"
+      },
+      "https://developers.google.com/workspace/sheets/api/troubleshoot-authentication-authorization": {
+        "id": 21,
+        "publisher": "Google for Developers",
+        "url": "https://developers.google.com/workspace/sheets/api/troubleshoot-authentication-authorization",
+        "title": "Troubleshoot authentication & authorization issues",
+        "info": "Common authentication and authorization problems with Google Sheets API including app verification warnings, credential file issues, token expiration, and origin mismatch errors."
+      },
+      "https://developers.google.com/identity/protocols/oauth2/scopes": {
+        "id": 23,
+        "publisher": "Google for Developers",
+        "url": "https://developers.google.com/identity/protocols/oauth2/scopes",
+        "title": "OAuth 2.0 Scopes for Google APIs",
+        "info": "Comprehensive OAuth2 scope list for Google APIs including specific Google Sheets and Google Drive scopes with descriptions and classifications"
+      },
+      "https://curity.io/resources/learn/scope-best-practices/": {
+        "id": 25,
+        "publisher": "Curity",
+        "url": "https://curity.io/resources/learn/scope-best-practices/",
+        "title": "OAuth Scopes Best Practices",
+        "info": "Comprehensive OAuth scope best practices including least privilege principles, scope design strategies, API authorization enforcement, and security recommendations for API protection"
+      },
+      "https://developers.google.com/identity/protocols/oauth2/service-account": {
+        "id": 26,
+        "publisher": "Google for Developers",
+        "url": "https://developers.google.com/identity/protocols/oauth2/service-account",
+        "title": "Using OAuth 2.0 for Server to Server Applications",
+        "info": "Complete service account authentication documentation including server-to-server OAuth2 flow, JWT implementation, domain-wide delegation, and security best practices for server-side applications"
+      },
+      "https://docs.cloud.google.com/iam/docs/service-account-overview": {
+        "id": 27,
+        "publisher": "Google Cloud",
+        "url": "https://docs.cloud.google.com/iam/docs/service-account-overview",
+        "title": "Service accounts overview | Identity and Access Management (IAM)",
+        "info": "Service account overview including authentication methods, security considerations, lifecycle management, and best practices for Google Cloud applications"
+      }
+    },
+    "Cost Optimization Algorithms for Bulk Video Generation": {
+      "https://docs.dev.runwayml.com/guides/pricing/": {
+        "id": 28,
+        "publisher": "Runway Labs",
+        "url": "https://docs.dev.runwayml.com/guides/pricing/",
+        "title": "RunwayML API Pricing Structure",
+        "info": "Credit-based pricing model ($0.01 per credit), usage-based billing for video generation, tiered pricing structures for different API tiers"
+      },
+      "https://docs.cloud.google.com/transcoder/pricing": {
+        "id": 29,
+        "publisher": "Google Cloud",
+        "url": "https://docs.cloud.google.com/transcoder/pricing",
+        "title": "Google Cloud Transcoder API Pricing",
+        "info": "Per-minute transcoding rates for different video resolutions (SD: $0.05/min, HD: $0.15/min, 4K: $0.30/min), pricing tiers for bulk operations"
+      },
+      "https://www.cachefly.com/news/enhancing-video-streaming-experiences-with-advanced-cdn-technology/": {
+        "id": 30,
+        "publisher": "CacheFly",
+        "url": "https://www.cachefly.com/news/enhancing-video-streaming-experiences-with-advanced-cdn-technology/",
+        "title": "Advanced CDN Technology for Video Streaming",
+        "info": "Multi-layer caching strategy, CDN optimization techniques, edge computing for video delivery, compression algorithms for video streaming"
+      },
+      "https://www.tencentcloud.com/techpedia/124694": {
+        "id": 31,
+        "publisher": "Tencent Cloud",
+        "url": "https://www.tencentcloud.com/techpedia/124694",
+        "title": "Cost Control Solutions for Large Model Training",
+        "info": "Dynamic resource allocation based on batch optimization, real-time monitoring and analytics, cost control through resource scheduling"
+      },
+      "https://www.akamai.com/blog/edge/the-key-metric-for-happier-users": {
+        "id": 32,
+        "publisher": "Akamai Technologies",
+        "url": "https://www.akamai.com/blog/edge/the-key-metric-for-happier-users",
+        "title": "Cache Performance Optimization for Video Content",
+        "info": "Cache hit ratio optimization strategies, latency reduction through edge caching, bandwidth cost optimization techniques"
+      }
+    },
+    "AI Content Automation System Integration Architecture": {
+      "https://7v9b5bhnkpx9.space.minimax.io": {
+        "id": 33,
+        "publisher": "MiniMax AI Content Automation",
+        "url": "https://7v9b5bhnkpx9.space.minimax.io",
+        "title": "AI Content Automation Production Interface",
+        "info": "Current system deployment URL and interface for production-ready AI content generation system"
+      },
+      "https://github.com/jsimoes215/AI-Content-Automation.git": {
+        "id": 34,
+        "publisher": "GitHub Repository",
+        "url": "https://github.com/jsimoes215/AI-Content-Automation.git",
+        "title": "AI Content Automation Open Source Project",
+        "info": "Complete source code repository for AI Content Automation system with React frontend, FastAPI backend, video generation pipeline, content library, and analytics"
+      }
+    },
+    "Queue System Architecture Design": {
+      "https://www.danieleteti.it/post/building-a-simple-yet-robust-job-queue-system-using-postgresql/": {
+        "id": 35,
+        "publisher": "Daniele Teti",
+        "url": "https://www.danieleteti.it/post/building-a-simple-yet-robust-job-queue-system-using-postgresql/",
+        "title": "Building a Simple yet Robust Job Queue System Using Postgres",
+        "info": "PostgreSQL job queue implementation patterns using SELECT...FOR UPDATE SKIP LOCKED for concurrency-safe task polling, including schema design and state management"
+      },
+      "https://blog.algomaster.io/p/rate-limiting-algorithms-explained-with-code": {
+        "id": 36,
+        "publisher": "AlgoMaster Newsletter",
+        "url": "https://blog.algomaster.io/p/rate-limiting-algorithms-explained-with-code",
+        "title": "Rate Limiting Algorithms Explained with Code",
+        "info": "Rate limiting algorithms including token bucket, sliding window, and leaky bucket with implementation details"
+      },
+      "https://dev.to/andreparis/queue-based-exponential-backoff-a-resilient-retry-pattern-for-distributed-systems-37f3": {
+        "id": 37,
+        "publisher": "DEV Community",
+        "url": "https://dev.to/andreparis/queue-based-exponential-backoff-a-resilient-retry-pattern-for-distributed-systems-37f3",
+        "title": "Queue-Based Exponential Backoff: A Resilient Retry Pattern",
+        "info": "Queue-based exponential backoff pattern for resilient retry mechanisms in distributed systems"
+      },
+      "https://amplication.com/blog/the-role-of-queues-in-building-efficient-distributed-applications": {
+        "id": 38,
+        "publisher": "Amplication",
+        "url": "https://amplication.com/blog/the-role-of-queues-in-building-efficient-distributed-applications",
+        "title": "The Role of Queues in Building Efficient Distributed Applications",
+        "info": "Design patterns and best practices for modern distributed systems queue implementations"
+      },
+      "https://www.crunchydata.com/blog/message-queuing-using-native-postgresql": {
+        "id": 39,
+        "publisher": "Crunchy Data",
+        "url": "https://www.crunchydata.com/blog/message-queuing-using-native-postgresql",
+        "title": "Devious SQL: Message Queuing Using Native PostgreSQL",
+        "info": "SQL patterns for implementing message queuing using native PostgreSQL, including deadlock-free polling and state management"
+      },
+      "https://www.rudderstack.com/blog/scaling-postgres-queue/": {
+        "id": 40,
+        "publisher": "RudderStack",
+        "url": "https://www.rudderstack.com/blog/scaling-postgres-queue/",
+        "title": "Lessons from scaling PostgreSQL queues to 100k events per second",
+        "info": "Production example of scaling PostgreSQL queues to 100k events per second, including performance optimization techniques"
+      },
+      "https://stackoverflow.com/questions/297280/the-best-way-to-use-a-db-table-as-a-job-queue-a-k-a-batch-queue-or-message-queu": {
+        "id": 41,
+        "publisher": "Stack Overflow",
+        "url": "https://stackoverflow.com/questions/297280/the-best-way-to-use-a-db-table-as-a-job-queue-a-k-a-batch-queue-or-message-queu",
+        "title": "The best way to use a DB table as a job queue",
+        "info": "Best practices for using database tables as job queues, including SKIP LOCKED patterns and performance considerations"
+      },
+      "https://learn.microsoft.com/en-us/azure/architecture/patterns/priority-queue": {
+        "id": 42,
+        "publisher": "Microsoft Learn",
+        "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/priority-queue",
+        "title": "Priority Queue pattern - Azure Architecture Center",
+        "info": "Azure's official pattern documentation for implementing priority queue systems in distributed architectures"
       }
     }
   }

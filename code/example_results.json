@@ -1,0 +1,53 @@
+{
+  "timestamp": "2025-11-05T01:35:10.547152",
+  "examples": {
+    "Basic Batching": {
+      "status": "success",
+      "result": [
+        [
+          "Batch(id='fc6241bf-3418-44ee-9cb9-110357801065', requests=[ContentRequest(id='video_0', content_type='video', prompt='Professional office video 0: workspace with laptop and coffee', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={'video_style': 'corporate_professional'}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40477), deadline=None, metadata={}), ContentRequest(id='video_1', content_type='video', prompt='Professional office video 1: workspace with laptop and coffee', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={'video_style': 'corporate_professional'}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40510), deadline=None, metadata={})], created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40674), max_size=10, max_cost=200.0, max_duration=1800.0, engine='default', resolution='1920x1080', similarity_score=1.0, estimated_total_cost=6.0, priority_score=1.3830188679245283)",
+          "Batch(id='030def10-83cf-4933-991b-75b4ea63a97f', requests=[ContentRequest(id='video_2', content_type='video', prompt='Professional office video 2: workspace with laptop and coffee', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={'video_style': 'corporate_professional'}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40520), deadline=None, metadata={}), ContentRequest(id='video_3', content_type='video', prompt='Professional office video 3: workspace with laptop and coffee', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={'video_style': 'corporate_professional'}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40526), deadline=None, metadata={})], created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40762), max_size=10, max_cost=200.0, max_duration=1800.0, engine='default', resolution='1920x1080', similarity_score=1.0, estimated_total_cost=6.0, priority_score=1.3830188679245283)",
+          "Batch(id='7b3f34ff-1f62-41d2-b4d0-1fc233064139', requests=[ContentRequest(id='video_4', content_type='video', prompt='Professional office video 4: workspace with laptop and coffee', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={'video_style': 'corporate_professional'}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40531), deadline=None, metadata={})], created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 40806), max_size=10, max_cost=200.0, max_duration=1800.0, engine='default', resolution='1920x1080', similarity_score=0.51, estimated_total_cost=3.0, priority_score=1.3912621359223303)"
+        ],
+        {
+          "total_requests": 5,
+          "batched_requests": 5,
+          "cached_requests": 0,
+          "total_cost_saved": 0.0,
+          "average_batch_size": 0.8333333333333334,
+          "cache_hit_ratio": 0.0,
+          "batching_efficiency": 1.0,
+          "cost_savings_percentage": 0.0,
+          "active_batches": 0,
+          "queue_size": 0
+        }
+      ]
+    },
+    "Cache Reuse": {
+      "status": "success",
+      "result": true
+    },
+    "Priority Scheduling": {
+      "status": "success",
+      "result": [
+        "Batch(id='background_batch', requests=[ContentRequest(id='bg_req_0', content_type='video', prompt='Background content 1', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={}, priority=3, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542302), deadline=None, metadata={}), ContentRequest(id='bg_req_1', content_type='video', prompt='Background content 2', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={}, priority=3, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542307), deadline=None, metadata={}), ContentRequest(id='bg_req_2', content_type='video', prompt='Background content 3', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={}, priority=3, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542311), deadline=None, metadata={})], created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542404), max_size=10, max_cost=200.0, max_duration=60.0, engine='default', resolution='1920x1080', similarity_score=0.5058139534883721, estimated_total_cost=9.0, priority_score=0.9752293577981652)",
+        "Batch(id='normal_batch', requests=[ContentRequest(id='normal_req_0', content_type='video', prompt='Tutorial video 1', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542292), deadline=None, metadata={}), ContentRequest(id='normal_req_1', content_type='video', prompt='Tutorial video 2', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={}, priority=2, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542297), deadline=None, metadata={})], created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542370), max_size=10, max_cost=200.0, max_duration=60.0, engine='default', resolution='1920x1080', similarity_score=0.5059523809523809, estimated_total_cost=6.0, priority_score=1.3830188679245283)",
+        "Batch(id='urgent_batch', requests=[ContentRequest(id='urgent_req', content_type='video', prompt='Urgent product launch video', reference_images=[], resolution='1920x1080', duration=30.0, engine='default', style_params={}, priority=1, estimated_cost=3.0, created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542285), deadline=None, metadata={})], created_at=datetime.datetime(2025, 11, 5, 1, 35, 10, 542320), max_size=10, max_cost=200.0, max_duration=60.0, engine='default', resolution='1920x1080', similarity_score=0.5072463768115942, estimated_total_cost=3.0, priority_score=1.7912621359223302)"
+      ]
+    },
+    "Cost Analysis": {
+      "status": "success",
+      "result": {
+        "individual_cost": 18.0,
+        "batch_cost": 18.0,
+        "direct_savings": 0,
+        "throughput_improvement": 4,
+        "resource_efficiency": 0.9090909090909091,
+        "benefit_ratio": 4.909090909090909,
+        "recommendation": "consider_batch",
+        "risk_assessment": "low"
+      }
+    }
+  },
+  "status": "completed"
+}

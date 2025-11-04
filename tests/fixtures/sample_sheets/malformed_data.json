@@ -1,0 +1,64 @@
+{
+  "sheet_name": "Malformed Data",
+  "format_type": "MALFORMED",
+  "description": "Data with formatting and structural issues",
+  "data": [
+    [
+      "title",
+      "description", 
+      "target_audience",
+      "tags"
+    ],
+    [
+      null,
+      "Row with null title",
+      "general",
+      "malformed, null value"
+    ],
+    [
+      "Row with mixed data types",
+      12345,
+      ["array", "in", "description"],
+      "tags"
+    ],
+    [
+      "Row with undefined values",
+      null,
+      "general", 
+      "undefined, test"
+    ],
+    [
+      "Row with special number values",
+      "Infinity",
+      -999,
+      "NaN"
+    ],
+    [
+      "Row with HTML/JavaScript",
+      "<script>alert('xss')</script> This should be sanitized",
+      "general",
+      "xss, security, test"
+    ],
+    [
+      "Very wide data row with many columns",
+      "Description with extra columns that don't match header",
+      "general",
+      "wide data",
+      "extra column 1",
+      "extra column 2",
+      "extra column 3"
+    ],
+    [
+      "Row with only header names as values",
+      "title",
+      "description", 
+      "target_audience"
+    ],
+    [
+      "Row with extremely long values",
+      "A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description A thousand character description",
+      "B thousand character audience",
+      "tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16, tag17, tag18, tag19, tag20, tag21, tag22, tag23, tag24, tag25, tag26, tag27, tag28, tag29, tag30, tag31, tag32, tag33, tag34, tag35, tag36, tag37, tag38, tag39, tag40, tag41, tag42, tag43, tag44, tag45, tag46, tag47, tag48, tag49, tag50"
+    ]
+  ]
+}

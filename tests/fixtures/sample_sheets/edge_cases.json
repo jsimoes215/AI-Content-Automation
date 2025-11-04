@@ -1,0 +1,115 @@
+{
+  "sheet_name": "Edge Cases",
+  "format_type": "EDGE_CASES",
+  "description": "Various edge cases and challenging scenarios",
+  "data": [
+    [
+      "title",
+      "description",
+      "target_audience",
+      "tags",
+      "tone",
+      "duration_estimate",
+      "platform"
+    ],
+    [
+      "",
+      "This is a video with an empty title - should be invalid",
+      "general",
+      "edge case, validation",
+      "neutral",
+      "2 minutes",
+      "youtube"
+    ],
+    [
+      "A", 
+      "This title is too short (1 character) - should be invalid",
+      "professionals",
+      "edge case, validation",
+      "professional",
+      "1 minute",
+      "linkedin"
+    ],
+    [
+      "Normal Title Here",
+      "This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. This video has an extremely long description that exceeds the 2000 character limit set in our validation rules. ",
+      "entrepreneurs",
+      "edge case, validation, long content",
+      "educational",
+      "25 minutes",
+      "youtube"
+    ],
+    [
+      "Video with Invalid Audience",
+      "This uses an invalid target audience that doesn't match our allowed values",
+      "invalid_audience_type",
+      "edge case, validation",
+      "casual",
+      "3 minutes",
+      "instagram"
+    ],
+    [
+      "Duplicate Content Example",
+      "Learn about productivity and time management techniques for professionals in the modern workplace",
+      "professionals",
+      "productivity, time management, professional development, workplace",
+      "educational",
+      "8 minutes",
+      "linkedin"
+    ],
+    [
+      "Another Similar Video",
+      "Master time management and productivity strategies for working professionals and business owners",
+      "professionals", 
+      "time management, productivity, business skills, work efficiency",
+      "educational",
+      "10 minutes",
+      "youtube"
+    ],
+    [
+      "Special Characters & Unicode: 🚀 ñáéíóú",
+      "Testing special characters, emojis, and unicode in various fields including title, description, and tags",
+      "general",
+      "special chars, unicode, emojis, testing, 🚀 ñáéíóú",
+      "casual",
+      "2 minutes",
+      "tiktok"
+    ],
+    [
+      "Duration Format Variations",
+      "Testing different duration formats: seconds, minutes, hours, and unusual formats",
+      "general",
+      "duration, time, testing",
+      "neutral",
+      "1:30:45",
+      "youtube"
+    ],
+    [
+      "Missing Required Fields Row",
+      "",
+      "",
+      "missing required fields test",
+      "neutral",
+      "",
+      ""
+    ],
+    [
+      "JSON in Text Field Test",
+      "This description contains JSON-like content: {\"key\": \"value\", \"nested\": {\"data\": \"test\"}} which should be treated as plain text",
+      "general",
+      "json, parsing, edge case",
+      "neutral",
+      "5 minutes",
+      "linkedin"
+    ],
+    [
+      "Very Long Tags List",
+      "Testing with many tags to see how the system handles tag limits and processing",
+      "general",
+      "tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16, tag17, tag18, tag19, tag20, tag21, tag22, tag23, tag24, tag25",
+      "casual",
+      "3 minutes",
+      "instagram"
+    ]
+  ]
+}

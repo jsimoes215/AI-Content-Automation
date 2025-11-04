@@ -1,11 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Home, FolderOpen, Library, BarChart3, Moon, Sun } from 'lucide-react';
+import { Home, FolderOpen, Library, BarChart3, Moon, Sun, FileSpreadsheet, Zap, History } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import ContentLibrary from './pages/ContentLibrary';
 import Analytics from './pages/Analytics';
+import JobHistory from './pages/JobHistory';
+import GoogleSheetsConnection from './pages/GoogleSheetsConnection';
+import BulkJobs from './pages/BulkJobs';
+import BulkJobProgress from './pages/BulkJobProgress';
 import './App.css';
 
 function Navigation() {
@@ -23,6 +27,9 @@ function Navigation() {
   const navItems = [
     { path: '/', icon: Home, label: 'Dashboard' },
     { path: '/projects', icon: FolderOpen, label: 'Projects' },
+    { path: '/bulk-jobs', icon: Zap, label: 'Bulk Jobs' },
+    { path: '/job-history', icon: History, label: 'Job History' },
+    { path: '/google-sheets', icon: FileSpreadsheet, label: 'Google Sheets' },
     { path: '/library', icon: Library, label: 'Content Library' },
     { path: '/analytics', icon: BarChart3, label: 'Analytics' },
   ];
@@ -88,6 +95,10 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/bulk-jobs" element={<BulkJobs />} />
+            <Route path="/bulk-jobs/:jobId" element={<BulkJobProgress />} />
+            <Route path="/job-history" element={<JobHistory />} />
+            <Route path="/google-sheets" element={<GoogleSheetsConnection />} />
             <Route path="/library" element={<ContentLibrary />} />
             <Route path="/analytics" element={<Analytics />} />
           </Routes>

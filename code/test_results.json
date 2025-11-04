@@ -1,0 +1,63 @@
+{
+  "total_tests": 9,
+  "passed": 5,
+  "failed": 4,
+  "success_rate": 55.55555555555556,
+  "total_time": 1.2030580043792725,
+  "test_results": [
+    {
+      "test": "Basic Batching",
+      "status": "FAIL",
+      "details": "Expected 1 batch, got 3",
+      "timestamp": "2025-11-05T01:33:02.999162"
+    },
+    {
+      "test": "Similarity Grouping",
+      "status": "PASS",
+      "details": "Grouped 3 requests into 2 batches",
+      "timestamp": "2025-11-05T01:33:02.999341"
+    },
+    {
+      "test": "Cache Functionality",
+      "status": "PASS",
+      "details": "Cache reuse working correctly",
+      "timestamp": "2025-11-05T01:33:02.999374"
+    },
+    {
+      "test": "Cost-Benefit Analysis",
+      "status": "PASS",
+      "details": "Benefit ratio: 5.91, Recommendation: consider_batch",
+      "timestamp": "2025-11-05T01:33:02.999452"
+    },
+    {
+      "test": "Priority Queue",
+      "status": "FAIL",
+      "details": "Batch priorities should be ordered: [3, 2, 1]",
+      "timestamp": "2025-11-05T01:33:02.999573"
+    },
+    {
+      "test": "Dynamic Batch Sizing",
+      "status": "PASS",
+      "details": "Created 5 batches for 5 complex requests",
+      "timestamp": "2025-11-05T01:33:02.999853"
+    },
+    {
+      "test": "Pipeline Integration",
+      "status": "FAIL",
+      "details": "'int' object is not iterable",
+      "timestamp": "2025-11-05T01:33:03.200431"
+    },
+    {
+      "test": "Performance Metrics",
+      "status": "FAIL",
+      "details": "'int' object is not iterable",
+      "timestamp": "2025-11-05T01:33:03.200697"
+    },
+    {
+      "test": "Rate Limiting",
+      "status": "PASS",
+      "details": "Rate limiting working: 0.00s, 0.00s, 1.00s",
+      "timestamp": "2025-11-05T01:33:04.201821"
+    }
+  ]
+}
