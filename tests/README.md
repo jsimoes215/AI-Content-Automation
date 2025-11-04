@@ -24,9 +24,50 @@ tests/
 │   └── malformed_data.json         # Corrupted/invalid data
 ├── test_sheet_formats.py           # Sheet format validation tests
 ├── test_data_validation.py         # Data validation pipeline tests
-├── run_tests.py                    # Test runner and utility script
+├── test_scheduling_optimization.py # Scheduling algorithm tests
+├── test_platform_timing.py         # Platform timing validation tests
+├── test_content_calendar.py        # Content calendar operation tests
+├── test_automated_suggestions.py   # Automated suggestion engine tests
+├── conftest.py                     # Test configuration and fixtures
+├── run_tests.py                    # Test runner for Google Sheets tests
+├── run_scheduling_tests.py         # Test runner for scheduling tests
 └── README.md                       # This documentation
 ```
+
+## Scheduling Optimization Test Suite
+
+The test suite also includes comprehensive tests for scheduling optimization algorithms covering:
+
+### Core Components Tested
+- **Scheduling Optimizer**: Multi-platform scheduling algorithms with constraint satisfaction
+- **Platform Timing**: Evidence-based timing calculations for YouTube, Instagram, TikTok, LinkedIn, Facebook
+- **Content Calendar**: CRUD operations, analytics, and integration workflows
+- **Automated Suggestions**: Real-time suggestion generation with Bayesian learning
+
+### Quick Start for Scheduling Tests
+```bash
+# Run all scheduling tests
+python run_scheduling_tests.py
+
+# Run with coverage and performance tests
+python run_scheduling_tests.py --verbose --coverage --performance
+
+# Run specific scheduling module
+pytest test_scheduling_optimization.py -v
+
+# Run platform timing tests
+pytest test_platform_timing.py -v
+```
+
+### Test Categories for Scheduling
+- **unit**: Individual algorithm tests
+- **integration**: Component interaction tests
+- **performance**: Performance and stress tests
+- **scheduling**: Core scheduling algorithm tests
+- **calendar**: Content calendar tests
+- **suggestions**: Suggestion engine tests
+
+See [TEST_SUITE_COMPLETION_SUMMARY.md](./TEST_SUITE_COMPLETION_SUMMARY.md) for detailed documentation.
 
 ## Sheet Format Types
 

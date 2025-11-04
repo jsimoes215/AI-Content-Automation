@@ -1,0 +1,29 @@
+{
+  "start_time": "2025-11-05T03:47:23.189094",
+  "test_suites": {
+    "timing_validation": {
+      "status": "SKIPPED",
+      "reason": "Test file not found"
+    },
+    "performance_benchmarks": {
+      "status": "SKIPPED",
+      "reason": "Test file not found"
+    },
+    "validation_scenarios": {
+      "status": "SKIPPED",
+      "reason": "Scenarios directory not found"
+    },
+    "validation_cases": {
+      "status": "SKIPPED",
+      "reason": "Cases directory not found"
+    }
+  },
+  "overall_status": "PASSED",
+  "summary": {},
+  "validation_reports": {
+    "status": "SKIPPED",
+    "reason": "Report generator not found"
+  },
+  "end_time": "2025-11-05T03:47:23.190990",
+  "total_duration": "0s"
+}

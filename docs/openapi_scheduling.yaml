@@ -1,0 +1,1536 @@
+openapi: 3.0.3
+info:
+  title: Scheduling Optimization API
+  description: |
+    Comprehensive API for managing content posting schedules, generating intelligent recommendations for optimal posting times, and optimizing existing schedules based on engagement patterns and platform-specific analytics.
+    
+    ## Features
+    - Intelligent scheduling recommendations based on engagement data
+    - Multi-platform content scheduling and management
+    - Real-time schedule optimization with constraints
+    - WebSocket support for live updates
+    - Comprehensive error handling and rate limiting
+    - Support for major social media platforms (YouTube, TikTok, Instagram, LinkedIn, Twitter, Facebook)
+    
+    ## Rate Limits
+    - Default: 100 requests per minute per tenant
+    - Burst: Up to 200 requests per minute
+    - Optimization endpoints: 10 requests per minute
+    - WebSocket connections: 10 connections per tenant
+    
+    ## Authentication
+    All endpoints require Bearer token authentication. Include the token in the Authorization header:
+    ```
+    Authorization: Bearer <your-jwt-token>
+    ```
+    
+    ## Base URL
+    - Production: `https://api.content-automation.com/api/v1`
+    - Staging: `https://api-staging.content-automation.com/api/v1`
+    
+    ## WebSocket
+    - Production: `wss://api.content-automation.com/api/v1/scheduling/ws`
+    - Staging: `wss://api-staging.content-automation.com/api/v1/scheduling/ws`
+    
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: api-support@content-automation.com
+    url: https://support.content-automation.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.content-automation.com/api/v1
+    description: Production server
+  - url: https://api-staging.content-automation.com/api/v1
+    description: Staging server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /scheduling/recommendations:
+    get:
+      summary: Get scheduling recommendations
+      description: |
+        Retrieve intelligent recommendations for optimal posting times based on platform analytics and engagement patterns.
+        
+        The recommendation algorithm considers:
+        - Historical engagement data
+        - Audience activity patterns
+        - Platform-specific constraints
+        - Content type performance
+        - Geographic considerations
+        - Seasonal trends
+      operationId: getRecommendations
+      tags:
+        - Recommendations
+      parameters:
+        - name: platforms
+          in: query
+          description: Filter by platform identifiers
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [youtube, tiktok, instagram, linkedin, twitter, facebook]
+            maxItems: 10
+        - name: target_count
+          in: query
+          description: Number of time windows requested
+          required: false
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 200
+            default: 10
+        - name: start_at
+          in: query
+          description: Start of recommendation window (RFC3339 format)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: end_at
+          in: query
+          description: End of recommendation window (RFC3339 format)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: timezone
+          in: query
+          description: IANA timezone for output recommendations
+          required: false
+          schema:
+            type: string
+            default: UTC
+            example: America/New_York
+        - name: content_type
+          in: query
+          description: Content classification filter
+          required: false
+          schema:
+            type: string
+            enum: [announcement, tutorial, entertainment, lifestyle, educational, promotional, behind_scenes]
+        - name: page_token
+          in: query
+          description: Pagination cursor for fetching additional results
+          required: false
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          required: false
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 200
+            default: 50
+        - name: sort
+          in: query
+          description: Sort field for recommendations
+          required: false
+          schema:
+            type: string
+            enum: [created_at, score]
+            default: score
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: Successful response with recommendations
+          headers:
+            X-RateLimit-Limit:
+              description: Rate limit for the time window
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              description: Remaining requests in the current window
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              description: Unix timestamp when the rate limit resets
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationResponse'
+              examples:
+                basic_response:
+                  summary: Basic recommendations response
+                  value:
+                    data:
+                      - id: rec_01HQ4J8R9ABCDEF1234567890
+                        window_start: 2025-11-05T18:00:00Z
+                        window_end: 2025-11-05T19:30:00Z
+                        score: 0.847
+                        reasons:
+                          - audience_active_peak
+                          - historical_engagement_high
+                        platforms:
+                          - youtube
+                        confidence: 0.82
+                        content_types:
+                          - announcement
+                          - tutorial
+                    page:
+                      next_page_token: null
+                      page_size: 50
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /scheduling/calendar:
+    post:
+      summary: Create a new schedule
+      description: |
+        Create a new content posting schedule with specific items and timing.
+        
+        The schedule will reserve posting slots for the specified content across multiple platforms.
+        Use the Idempotency-Key header to ensure duplicate requests return the same schedule.
+      operationId: createSchedule
+      tags:
+        - Schedules
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreateRequest'
+            examples:
+              basic_schedule:
+                summary: Basic single-platform schedule
+                value:
+                  title: Weekly Content Schedule
+                  timezone: America/New_York
+                  items:
+                    - content_id: content_01HQ5P2R3ABCDEF1234567890
+                      platform: youtube
+                      scheduled_time: 2025-11-06T14:00:00-05:00
+              multi_platform_campaign:
+                summary: Multi-platform campaign schedule
+                value:
+                  title: Product Launch Campaign
+                  timezone: America/New_York
+                  items:
+                    - content_id: content_announcement
+                      platform: youtube
+                      scheduled_time: 2025-11-06T14:00:00-05:00
+                      metadata:
+                        campaign_id: camp_01HQ5P2R3
+                        content_type: announcement
+                      callbacks:
+                        on_published: https://client.example.com/webhooks/published
+                    - content_id: content_teaser
+                      platform: instagram
+                      scheduled_time: 2025-11-06T14:30:00-05:00
+                      metadata:
+                        campaign_id: camp_01HQ5P2R3
+                        content_type: reel
+                  processing_deadline_ms: 10800000
+      responses:
+        '201':
+          description: Schedule created successfully
+          headers:
+            Location:
+              description: URL of the created schedule
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /scheduling/calendar/{schedule_id}:
+    get:
+      summary: Get schedule details
+      description: |
+        Retrieve comprehensive schedule information including items and status.
+        
+        Use the expand parameter to include additional details like schedule items,
+        performance metrics, or webhook callbacks.
+      operationId: getSchedule
+      tags:
+        - Schedules
+      parameters:
+        - $ref: '#/components/parameters/ScheduleId'
+        - name: page_token
+          in: query
+          description: Pagination cursor
+          required: false
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 200
+            default: 50
+        - name: state
+          in: query
+          description: Filter items by state
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [pending, scheduled, published, failed, skipped, canceled]
+        - name: sort
+          in: query
+          description: Sort field
+          required: false
+          schema:
+            type: string
+            enum: [created_at, updated_at, scheduled_time]
+            default: created_at
+        - name: order
+          in: query
+          description: Sort order
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: expand
+          in: query
+          description: Expand options to include additional data
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [items, metrics, callbacks]
+      responses:
+        '200':
+          description: Schedule details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleResponse'
+              examples:
+                running_schedule:
+                  summary: Active schedule with items
+                  value:
+                    id: sched_01HQ5P2T5CDEFGH3456789012
+                    state: running
+                    title: Product Launch Campaign
+                    percent_complete: 35.7
+                    items_total: 10
+                    items_completed: 4
+                    items_failed: 1
+                    items_pending: 5
+                    eta_ms: 900000
+                    items:
+                      - id: item_01HQ5P2U6DEFGHI4567890123
+                        content_id: content_announcement
+                        platform: youtube
+                        state: scheduled
+                        scheduled_time: 2025-11-06T14:00:00-05:00
+                        metadata:
+                          campaign_id: camp_01HQ5P2R3
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /scheduling/optimize:
+    post:
+      summary: Optimize schedule timing
+      description: |
+        Optimize existing schedule timing based on engagement patterns and audience behavior.
+        
+        The optimization algorithm considers historical performance, audience activity, platform constraints,
+        and user-defined constraints to suggest optimal posting times.
+        
+        Use apply=true to immediately apply changes, or apply=false for a dry run to preview changes.
+      operationId: optimizeSchedule
+      tags:
+        - Optimization
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptimizationRequest'
+            examples:
+              basic_optimization:
+                summary: Basic schedule optimization
+                value:
+                  schedule_id: sched_01HQ5P2T5CDEFGH3456789012
+                  targets:
+                    - content_id: content_01HQ5P2R3ABCDEF1234567890
+                      platform: youtube
+                      current_scheduled_time: 2025-11-06T16:30:00-05:00
+                  constraints:
+                    do_not_move_before: 2025-11-06T12:00:00-05:00
+                    do_not_move_after: 2025-11-06T20:00:00-05:00
+                  apply: false
+              advanced_optimization:
+                summary: Advanced optimization with constraints
+                value:
+                  schedule_id: sched_01HQ5P2T5CDEFGH3456789012
+                  targets:
+                    - content_id: content_01HQ5P2R3ABCDEF1234567890
+                      platform: youtube
+                      current_scheduled_time: 2025-11-06T16:30:00-05:00
+                    - content_id: content_01HQ5P2S4BCDEFG2345678901
+                      platform: instagram
+                      current_scheduled_time: 2025-11-06T17:00:00-05:00
+                  constraints:
+                    do_not_move_before: 2025-11-06T12:00:00-05:00
+                    do_not_move_after: 2025-11-06T20:00:00-05:00
+                    blackout_windows:
+                      - start: 2025-11-06T18:00:00-05:00
+                        end: 2025-11-06T18:30:00-05:00
+                    platform_specific_rules:
+                      youtube:
+                        min_interval_minutes: 120
+                        avoid_friday_evenings: true
+                      instagram:
+                        min_interval_minutes: 60
+                  apply: true
+      responses:
+        '200':
+          description: Optimization completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptimizationResult'
+              examples:
+                optimization_success:
+                  summary: Successful optimization with changes
+                  value:
+                    id: opt_01HQ5P2V7EFGHIJ5678901234
+                    state: completed
+                    changes:
+                      - content_id: content_01HQ5P2R3ABCDEF1234567890
+                        platform: youtube
+                        previous_time: 2025-11-06T16:30:00-05:00
+                        new_time: 2025-11-06T18:15:00-05:00
+                        score_before: 0.68
+                        score_after: 0.84
+                        reason: evening_engagement_peak
+                        confidence: 0.76
+                    metrics:
+                      total_targeted: 2
+                      changed_count: 1
+                      unchanged_count: 1
+                      average_score_lift: 0.16
+                      rate_limited: false
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /scheduling/health:
+    get:
+      summary: Check service health
+      description: |
+        Check the health and status of the scheduling service.
+        
+        Returns information about service availability, uptime, and dependency status.
+      operationId: checkHealth
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                healthy_service:
+                  summary: Healthy service response
+                  value:
+                    status: healthy
+                    service: scheduling_optimization
+                    version: 1.0.0
+                    timestamp: 2025-11-05T03:51:30Z
+                    uptime_seconds: 86400
+                    dependencies:
+                      database: healthy
+                      cache: healthy
+                      queue_service: healthy
+
+  /scheduling/platforms:
+    get:
+      summary: Get supported platforms
+      description: |
+        Get list of supported social media platforms and their capabilities.
+        
+        Returns information about supported platforms, content types, rate limits,
+        and optimal posting times for each platform.
+      operationId: getSupportedPlatforms
+      tags:
+        - Platforms
+      responses:
+        '200':
+          description: List of supported platforms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformListResponse'
+              examples:
+                platform_list:
+                  summary: Complete platform list
+                  value:
+                    data:
+                      - id: youtube
+                        name: YouTube
+                        supports:
+                          - long_form
+                          - shorts
+                        max_video_duration: 43200
+                        optimal_times:
+                          weekdays:
+                            - 14:00
+                            - 15:00
+                            - 20:00
+                          weekends:
+                            - 09:00
+                            - 11:00
+                            - 16:00
+                        rate_limits:
+                          uploads_per_day: 6
+                          uploads_per_hour: 1
+                      - id: tiktok
+                        name: TikTok
+                        supports:
+                          - videos
+                        max_video_duration: 600
+                        rate_limits:
+                          uploads_per_day: 3
+                          uploads_per_hour: 1
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT Bearer token for API authentication.
+        Obtain token from your authentication service and include it in the Authorization header.
+
+  parameters:
+    ScheduleId:
+      name: schedule_id
+      in: path
+      description: Unique schedule identifier
+      required: true
+      schema:
+        type: string
+        pattern: '^sched_[a-zA-Z0-9]{16}$'
+      example: sched_01HQ5P2T5CDEFGH3456789012
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      description: |
+        UUID for ensuring idempotent requests. If you send multiple requests with the same
+        idempotency key, the server will respond with the same result without creating duplicates.
+      required: false
+      schema:
+        type: string
+        format: uuid
+      example: 3c5a9e2f-1d70-4a6f-9a3f-8e7a0b1c2d3e
+
+  schemas:
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique recommendation identifier
+          example: rec_01HQ4J8R9ABCDEF1234567890
+        window_start:
+          type: string
+          format: date-time
+          description: Start of optimal posting window
+          example: 2025-11-05T18:00:00Z
+        window_end:
+          type: string
+          format: date-time
+          description: End of optimal posting window
+          example: 2025-11-05T19:30:00Z
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Overall optimization score
+          example: 0.847
+        reasons:
+          type: array
+          items:
+            type: string
+          description: Factors contributing to recommendation
+          example:
+            - audience_active_peak
+            - historical_engagement_high
+            - optimal_algorithm_timing
+        platforms:
+          type: array
+          items:
+            type: string
+          description: Platforms this recommendation applies to
+          example:
+            - youtube
+            - tiktok
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Model confidence in prediction
+          example: 0.82
+        content_types:
+          type: array
+          items:
+            type: string
+          description: Content types that perform well in this window
+          example:
+            - announcement
+            - tutorial
+      required:
+        - id
+        - window_start
+        - window_end
+        - score
+        - reasons
+        - platforms
+        - confidence
+        - content_types
+
+    RecommendationResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recommendation'
+        page:
+          $ref: '#/components/schemas/PageInfo'
+      required:
+        - data
+        - page
+
+    ScheduleItemCreate:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: Reference to content item
+          example: content_01HQ5P2R3ABCDEF1234567890
+        platform:
+          type: string
+          description: Target platform identifier
+          enum: [youtube, tiktok, instagram, linkedin, twitter, facebook]
+          example: youtube
+        scheduled_time:
+          type: string
+          format: date-time
+          description: Exact posting time
+          example: 2025-11-06T14:00:00-05:00
+        metadata:
+          type: object
+          description: Arbitrary metadata for the item
+          additionalProperties: true
+          example:
+            campaign_id: camp_01HQ5P2R3
+            content_type: announcement
+            priority: high
+        callbacks:
+          type: object
+          description: Webhook URLs for status updates
+          properties:
+            on_published:
+              type: string
+              format: uri
+              description: URL to call when item is published
+              example: https://client.example.com/webhooks/published
+            on_failed:
+              type: string
+              format: uri
+              description: URL to call when item fails
+              example: https://client.example.com/webhooks/failed
+          additionalProperties:
+            type: string
+            format: uri
+      required:
+        - content_id
+        - platform
+        - scheduled_time
+
+    ScheduleCreateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Human-readable schedule name
+          example: Product Launch Campaign
+        timezone:
+          type: string
+          description: IANA timezone for schedule
+          example: America/New_York
+        items:
+          type: array
+          minItems: 1
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/ScheduleItemCreate'
+          description: Content items to schedule
+        processing_deadline_ms:
+          type: integer
+          minimum: 3600000
+          maximum: 86400000
+          description: Maximum processing time in milliseconds
+          example: 10800000
+      required:
+        - title
+        - timezone
+        - items
+
+    ScheduleItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique item identifier
+          example: item_01HQ5P2U6DEFGHI4567890123
+        content_id:
+          type: string
+          description: Reference to content item
+          example: content_01HQ5P2R3ABCDEF1234567890
+        platform:
+          type: string
+          description: Target platform
+          example: youtube
+        state:
+          type: string
+          description: Current state of the item
+          enum: [pending, scheduled, published, failed, skipped, canceled]
+          example: scheduled
+        scheduled_time:
+          type: string
+          format: date-time
+          description: Scheduled posting time
+          example: 2025-11-06T14:00:00-05:00
+        published_time:
+          type: string
+          format: date-time
+          description: Actual publishing time
+          nullable: true
+          example: 2025-11-06T14:00:05-05:00
+        metadata:
+          type: object
+          description: Item metadata
+          additionalProperties: true
+        callbacks:
+          type: object
+          description: Webhook callbacks
+          additionalProperties:
+            type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemError'
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemArtifact'
+        created_at:
+          type: string
+          format: date-time
+          description: Item creation time
+          example: 2025-11-05T03:45:15Z
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update time
+          example: 2025-11-05T03:46:30Z
+      required:
+        - id
+        - content_id
+        - platform
+        - state
+        - scheduled_time
+        - created_at
+        - updated_at
+
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique schedule identifier
+          example: sched_01HQ5P2T5CDEFGH3456789012
+        tenant_id:
+          type: string
+          description: Tenant identifier
+          example: tenant_01HQ5P2R3
+        state:
+          type: string
+          description: Schedule state
+          enum: [pending, running, optimizing, completing, completed, canceling, canceled, failed]
+          example: running
+        title:
+          type: string
+          description: Schedule name
+          example: Product Launch Campaign
+        timezone:
+          type: string
+          description: Schedule timezone
+          example: America/New_York
+        percent_complete:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Completion percentage
+          example: 35.7
+        items_total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+          example: 10
+        items_completed:
+          type: integer
+          minimum: 0
+          description: Number of completed items
+          example: 4
+        items_failed:
+          type: integer
+          minimum: 0
+          description: Number of failed items
+          example: 1
+        items_skipped:
+          type: integer
+          minimum: 0
+          description: Number of skipped items
+          example: 0
+        items_canceled:
+          type: integer
+          minimum: 0
+          description: Number of canceled items
+          example: 0
+        items_pending:
+          type: integer
+          minimum: 0
+          description: Number of pending items
+          example: 5
+        time_to_start_ms:
+          type: integer
+          nullable: true
+          description: Time until schedule starts
+          example: 1500
+        time_processing_ms:
+          type: integer
+          minimum: 0
+          description: Total processing time
+          example: 45000
+        average_duration_ms_per_item:
+          type: number
+          nullable: true
+          description: Average processing time per item
+          example: 22500
+        eta_ms:
+          type: integer
+          nullable: true
+          description: Estimated time to completion
+          example: 900000
+        rate_limited:
+          type: boolean
+          description: Whether schedule is rate limited
+          example: false
+        processing_deadline_ms:
+          type: integer
+          minimum: 0
+          description: Processing deadline in milliseconds
+          example: 10800000
+        created_at:
+          type: string
+          format: date-time
+          description: Schedule creation time
+          example: 2025-11-05T03:45:12Z
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update time
+          example: 2025-11-05T03:46:30Z
+        idempotency_key:
+          type: string
+          nullable: true
+          description: Idempotency key used for creation
+          example: 3c5a9e2f-1d70-4a6f-9a3f-8e7a0b1c2d3e
+      required:
+        - id
+        - tenant_id
+        - state
+        - title
+        - timezone
+        - percent_complete
+        - items_total
+        - items_completed
+        - items_failed
+        - items_skipped
+        - items_canceled
+        - items_pending
+        - time_processing_ms
+        - rate_limited
+        - processing_deadline_ms
+        - created_at
+        - updated_at
+
+    ScheduleResponse:
+      allOf:
+        - $ref: '#/components/schemas/Schedule'
+        - type: object
+          properties:
+            items:
+              type: array
+              nullable: true
+              items:
+                $ref: '#/components/schemas/ScheduleItem'
+            page:
+              $ref: '#/components/schemas/PageInfo'
+      required:
+        - id
+        - tenant_id
+        - state
+        - title
+        - timezone
+        - percent_complete
+        - items_total
+        - items_completed
+        - items_failed
+        - items_skipped
+        - items_canceled
+        - items_pending
+        - time_processing_ms
+        - rate_limited
+        - processing_deadline_ms
+        - created_at
+        - updated_at
+
+    OptimizationTarget:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: Content item identifier
+          example: content_01HQ5P2R3ABCDEF1234567890
+        platform:
+          type: string
+          description: Target platform
+          example: youtube
+        current_scheduled_time:
+          type: string
+          format: date-time
+          description: Current scheduled time
+          example: 2025-11-06T16:30:00-05:00
+      required:
+        - content_id
+        - platform
+        - current_scheduled_time
+
+    TimeRange:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start of time range
+          example: 2025-11-06T18:00:00-05:00
+        end:
+          type: string
+          format: date-time
+          description: End of time range
+          example: 2025-11-06T18:30:00-05:00
+      required:
+        - start
+        - end
+
+    OptimizationConstraint:
+      type: object
+      properties:
+        do_not_move_before:
+          type: string
+          format: date-time
+          nullable: true
+          description: Earliest acceptable time
+          example: 2025-11-06T12:00:00-05:00
+        do_not_move_after:
+          type: string
+          format: date-time
+          nullable: true
+          description: Latest acceptable time
+          example: 2025-11-06T20:00:00-05:00
+        blackout_windows:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/TimeRange'
+          description: Times to avoid
+        platform_specific_rules:
+          type: object
+          nullable: true
+          description: Platform-specific optimization rules
+          additionalProperties: true
+          example:
+            youtube:
+              min_interval_minutes: 120
+              avoid_friday_evenings: true
+            instagram:
+              min_interval_minutes: 60
+
+    OptimizationRequest:
+      type: object
+      properties:
+        schedule_id:
+          type: string
+          description: Schedule to optimize
+          example: sched_01HQ5P2T5CDEFGH3456789012
+        targets:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OptimizationTarget'
+          description: Items to optimize
+        constraints:
+          $ref: '#/components/schemas/OptimizationConstraint'
+        apply:
+          type: boolean
+          description: Whether to apply changes (false = dry run)
+          default: false
+          example: true
+      required:
+        - schedule_id
+        - targets
+        - apply
+
+    OptimizationChange:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: Content item identifier
+          example: content_01HQ5P2R3ABCDEF1234567890
+        platform:
+          type: string
+          description: Target platform
+          example: youtube
+        previous_time:
+          type: string
+          format: date-time
+          description: Previous scheduled time
+          example: 2025-11-06T16:30:00-05:00
+        new_time:
+          type: string
+          format: date-time
+          description: New optimized time
+          example: 2025-11-06T18:15:00-05:00
+        score_before:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Score before optimization
+          example: 0.68
+        score_after:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Score after optimization
+          example: 0.84
+        reason:
+          type: string
+          description: Reason for optimization
+          example: evening_engagement_peak
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Confidence in the optimization
+          example: 0.76
+      required:
+        - content_id
+        - platform
+        - previous_time
+        - new_time
+        - score_before
+        - score_after
+        - reason
+        - confidence
+
+    OptimizationMetrics:
+      type: object
+      properties:
+        total_targeted:
+          type: integer
+          minimum: 0
+          description: Total items targeted for optimization
+          example: 2
+        changed_count:
+          type: integer
+          minimum: 0
+          description: Number of items that were changed
+          example: 1
+        unchanged_count:
+          type: integer
+          minimum: 0
+          description: Number of items that remained unchanged
+          example: 1
+        average_score_lift:
+          type: number
+          description: Average improvement in score
+          example: 0.16
+        rate_limited:
+          type: boolean
+          description: Whether optimization was rate limited
+          example: false
+      required:
+        - total_targeted
+        - changed_count
+        - unchanged_count
+        - average_score_lift
+        - rate_limited
+
+    OptimizationResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique optimization result identifier
+          example: opt_01HQ5P2V7EFGHIJ5678901234
+        tenant_id:
+          type: string
+          description: Tenant identifier
+          example: tenant_01HQ5P2R3
+        schedule_id:
+          type: string
+          description: Schedule that was optimized
+          example: sched_01HQ5P2T5CDEFGH3456789012
+        state:
+          type: string
+          description: Optimization state
+          enum: [pending, running, completed, failed]
+          example: completed
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptimizationChange'
+        metrics:
+          $ref: '#/components/schemas/OptimizationMetrics'
+        created_at:
+          type: string
+          format: date-time
+          description: Optimization creation time
+          example: 2025-11-05T03:50:00Z
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update time
+          example: 2025-11-05T03:50:45Z
+      required:
+        - id
+        - tenant_id
+        - schedule_id
+        - state
+        - changes
+        - metrics
+        - created_at
+        - updated_at
+
+    PageInfo:
+      type: object
+      properties:
+        next_page_token:
+          type: string
+          nullable: true
+          description: Token for next page, null if last page
+          example: eyJ0b2tlbiI6ICJwYWdlXzFfMjUwIn0
+        page_size:
+          type: integer
+          description: Number of items returned
+          example: 50
+      required:
+        - page_size
+
+    ItemError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: platform_upload_failed
+        message:
+          type: string
+          description: Error message
+          example: Failed to upload to Instagram: Rate limit exceeded
+        timestamp:
+          type: string
+          format: date-time
+          description: Error occurrence time
+          example: 2025-11-06T14:05:12Z
+      required:
+        - code
+        - message
+        - timestamp
+
+    ItemArtifact:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Artifact type
+          example: video_upload
+        url:
+          type: string
+          format: uri
+          description: Artifact URL
+          example: https://storage.content-automation.com/artifacts/item_01HQ5P2U6DEFGHI4567890123/video.mp4
+        metadata:
+          type: object
+          description: Additional artifact metadata
+          additionalProperties: true
+          example:
+            duration: 180
+            resolution: 1920x1080
+            format: mp4
+      required:
+        - type
+        - url
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          example: healthy
+        service:
+          type: string
+          example: scheduling_optimization
+        version:
+          type: string
+          example: 1.0.0
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-11-05T03:51:30Z
+        uptime_seconds:
+          type: integer
+          example: 86400
+        dependencies:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+              example: healthy
+            cache:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+              example: healthy
+            queue_service:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+              example: healthy
+      required:
+        - status
+        - service
+        - timestamp
+
+    Platform:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Platform identifier
+          example: youtube
+        name:
+          type: string
+          description: Display name
+          example: YouTube
+        supports:
+          type: array
+          items:
+            type: string
+          description: Supported content types
+          example:
+            - long_form
+            - shorts
+        max_video_duration:
+          type: integer
+          nullable: true
+          description: Maximum video duration in seconds
+          example: 43200
+        optimal_times:
+          type: object
+          description: Optimal posting times
+          properties:
+            weekdays:
+              type: array
+              items:
+                type: string
+              example:
+                - 14:00
+                - 15:00
+                - 20:00
+            weekends:
+              type: array
+              items:
+                type: string
+              example:
+                - 09:00
+                - 11:00
+                - 16:00
+        rate_limits:
+          type: object
+          description: Platform-specific rate limits
+          additionalProperties: true
+          example:
+            uploads_per_day: 6
+            uploads_per_hour: 1
+      required:
+        - id
+        - name
+        - supports
+
+    PlatformListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Platform'
+      required:
+        - data
+
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Specific error code
+          example: validation_error
+        error_message:
+          type: string
+          description: Human-readable error message
+          example: Invalid scheduled_time format
+        error_class:
+          type: string
+          nullable: true
+          description: Exception class name
+          example: ValueError
+        detail:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+          example:
+            field: scheduled_time
+            value: invalid_date
+            expected: RFC3339 format
+        request_id:
+          type: string
+          description: Unique request identifier for debugging
+          example: req_01HQ5P2X9HIJKL7890123456
+        timestamp:
+          type: string
+          format: date-time
+          description: Error occurrence time
+          example: 2025-11-05T03:52:00Z
+      required:
+        - error_code
+        - error_message
+        - request_id
+        - timestamp
+
+  responses:
+    BadRequest:
+      description: Bad request - malformed or invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: invalid_parameter
+            error_message: Invalid timezone format: 'invalid/timezone'
+            detail:
+              parameter: timezone
+              value: invalid/timezone
+              expected: IANA timezone format
+            request_id: req_01HQ5P2X9HIJKL7890123456
+            timestamp: 2025-11-05T03:52:00Z
+
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: unauthorized
+            error_message: Invalid or expired token
+            request_id: req_01HQ5P2Y0JKLMN8901234567
+            timestamp: 2025-11-05T03:53:00Z
+
+    Forbidden:
+      description: Forbidden - authenticated but lacking required permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: forbidden
+            error_message: Insufficient permissions for schedule management
+            request_id: req_01HQ5P2Y1KLMNO9012345678
+            timestamp: 2025-11-05T03:54:00Z
+
+    NotFound:
+      description: Not found - resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: not_found
+            error_message: Schedule not found
+            detail:
+              schedule_id: sched_nonexistent
+            request_id: req_01HQ5P2Y2LMNOP0123456789
+            timestamp: 2025-11-05T03:55:00Z
+
+    Conflict:
+      description: Conflict - resource state conflict or idempotency conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: conflict
+            error_message: Schedule already exists with this idempotency key
+            detail:
+              idempotency_key: 3c5a9e2f-1d70-4a6f-9a3f-8e7a0b1c2d3e
+              existing_schedule_id: sched_01HQ5P2T5CDEFGH3456789012
+            request_id: req_01HQ5P2Y3MNOPQ1234567890
+            timestamp: 2025-11-05T03:56:00Z
+
+    ValidationError:
+      description: Validation error - request validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: validation_error
+            error_message: At least one item is required
+            error_class: ValueError
+            detail:
+              field: items
+              value: []
+              expected: Non-empty array
+            request_id: req_01HQ5P2Y4NOPQR2345678901
+            timestamp: 2025-11-05T03:57:00Z
+
+    RateLimited:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying
+          schema:
+            type: integer
+            example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: rate_limited
+            error_message: Rate limit exceeded
+            detail:
+              limit: 100
+              window: 1 minute
+              retry_after: 45
+            request_id: req_01HQ5P2Y5OPQRS3456789012
+            timestamp: 2025-11-05T03:58:00Z
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error_code: internal_error
+            error_message: Unexpected server error
+            request_id: req_01HQ5P2Y6PQSTU4567890123
+            timestamp: 2025-11-05T03:59:00Z
+
+tags:
+  - name: Recommendations
+    description: Intelligent scheduling recommendations
+  - name: Schedules
+    description: Schedule management and monitoring
+  - name: Optimization
+    description: Schedule optimization and timing improvements
+  - name: Health
+    description: Service health and monitoring
+  - name: Platforms
+    description: Platform information and capabilities

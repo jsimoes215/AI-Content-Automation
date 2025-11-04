@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, TrendingUp, FolderOpen, Library as LibraryIcon, Clock } from 'lucide-react';
+import { Plus, TrendingUp, FolderOpen, Library as LibraryIcon, Clock, Calendar } from 'lucide-react';
 import apiClient from '../lib/api';
 
 interface Project {
@@ -70,11 +70,11 @@ export default function Dashboard() {
       bgColor: 'bg-green-100 dark:bg-green-900/30',
     },
     {
-      label: 'Library Items',
-      value: 0,
-      icon: LibraryIcon,
-      color: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+      label: 'Scheduled Today',
+      value: 12, // Mock data - would come from scheduling analytics
+      icon: Calendar,
+      color: 'text-indigo-600 dark:text-indigo-400',
+      bgColor: 'bg-indigo-100 dark:bg-indigo-900/30',
     },
   ];
 
@@ -95,13 +95,22 @@ export default function Dashboard() {
             Welcome to AI Content Automation System
           </p>
         </div>
-        <button
-          onClick={() => navigate('/projects')}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          New Project
-        </button>
+        <div className="flex space-x-3">
+          <button
+            onClick={() => navigate('/scheduling')}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-medium rounded-lg hover:from-green-700 hover:to-blue-700 transition-all shadow-lg"
+          >
+            <Calendar className="w-5 h-5 mr-2" />
+            Scheduling
+          </button>
+          <button
+            onClick={() => navigate('/projects')}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            New Project
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -1,0 +1,235 @@
+{
+  "platform": "instagram",
+  "research_date": "2025-01-01",
+  "data_sources": [
+    {
+      "name": "Sprout Social 2025",
+      "sample_size": "30000+ brands and creators",
+      "methodology": "Cross-platform engagement analysis with Instagram focus",
+      "reliability": "High - Platform-level aggregation with time-of-day analysis"
+    },
+    {
+      "name": "Buffer 2025",
+      "sample_size": "2100000+ posts across 102000+ accounts",
+      "methodology": "Large-scale frequency and growth correlation analysis",
+      "reliability": "High - Frequency to growth/reach modeling, robust dataset"
+    },
+    {
+      "name": "Instagram Official",
+      "sample_size": "Platform analytics and algorithm documentation",
+      "methodology": "Multi-algorithm system breakdown by surface",
+      "reliability": "High - Authoritative source on ranking principles"
+    },
+    {
+      "name": "Adobe, DemandSage, Iconosquare",
+      "sample_size": "Aggregated Reels timing studies",
+      "methodology": "Reels-specific timing analysis and A/B testing",
+      "reliability": "Medium - Aggregated studies, needs local validation"
+    }
+  ],
+  "optimal_timing": {
+    "best_single_slot_feed": {
+      "day": "monday",
+      "hour": 15,
+      "confidence": 0.89
+    },
+    "best_single_slot_reels": {
+      "day": "tuesday", 
+      "hour": 11,
+      "confidence": 0.91
+    },
+    "best_days_feed": [
+      {"day": "monday", "rank": 1, "score": 0.89},
+      {"day": "tuesday", "rank": 2, "score": 0.87},
+      {"day": "wednesday", "rank": 3, "score": 0.85},
+      {"day": "thursday", "rank": 4, "score": 0.83},
+      {"day": "friday", "rank": 5, "score": 0.81}
+    ],
+    "best_days_reels": [
+      {"day": "monday", "rank": 1, "score": 0.88},
+      {"day": "tuesday", "rank": 2, "score": 0.91},
+      {"day": "wednesday", "rank": 3, "score": 0.86},
+      {"day": "thursday", "rank": 4, "score": 0.84},
+      {"day": "friday", "rank": 5, "score": 0.82}
+    ],
+    "peak_hours_feed": [
+      {"hour": 10, "score": 0.82, "day_availability": ["monday", "tuesday", "wednesday", "thursday"]},
+      {"hour": 11, "score": 0.84, "day_availability": ["monday", "tuesday", "wednesday", "thursday"]},
+      {"hour": 12, "score": 0.86, "day_availability": ["monday", "tuesday", "wednesday", "thursday"]},
+      {"hour": 13, "score": 0.87, "day_availability": ["monday", "tuesday", "wednesday", "thursday"]},
+      {"hour": 14, "score": 0.85, "day_availability": ["monday", "tuesday", "wednesday", "thursday"]},
+      {"hour": 15, "score": 0.89, "day_availability": ["monday", "tuesday", "wednesday", "thursday"]},
+      {"hour": 18, "score": 0.78, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 19, "score": 0.76, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]}
+    ],
+    "peak_hours_reels": [
+      {"hour": 9, "score": 0.87, "day_availability": ["monday", "tuesday", "wednesday"]},
+      {"hour": 10, "score": 0.89, "day_availability": ["monday", "tuesday", "wednesday"]},
+      {"hour": 11, "score": 0.91, "day_availability": ["monday", "tuesday", "wednesday"]},
+      {"hour": 12, "score": 0.88, "day_availability": ["monday", "tuesday", "wednesday"]},
+      {"hour": 13, "score": 0.86, "day_availability": ["monday", "tuesday", "wednesday"]},
+      {"hour": 6, "score": 0.82, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 7, "score": 0.84, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 18, "score": 0.85, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 19, "score": 0.83, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]}
+    ],
+    "time_windows_feed": [
+      {"start": 10, "end": 15, "name": "Weekday Mid-Morning to Mid-Afternoon", "confidence": 0.88},
+      {"start": 18, "end": 19, "name": "Evening Engagement", "confidence": 0.77}
+    ],
+    "time_windows_reels": [
+      {"start": 9, "end": 13, "name": "Mid-Morning to Early Afternoon", "confidence": 0.89},
+      {"start": 6, "end": 9, "name": "Early Morning Bookend", "confidence": 0.83},
+      {"start": 18, "end": 21, "name": "Evening Bookend", "confidence": 0.84}
+    ],
+    "weekend_performance": {
+      "saturday_peak": {"hour": 18, "score": 0.75, "note": "Likes spike possible for certain audiences"},
+      "sunday_performance": {"score": 0.68, "note": "Generally weaker than weekdays"}
+    }
+  },
+  "frequency_recommendations": {
+    "feed_posts": {
+      "emerging_creators": {"min": 3, "max": 5, "unit": "per week"},
+      "established_creators": {"min": 5, "max": 7, "unit": "per week"},
+      "brands": {"min": 3, "max": 5, "unit": "per week"},
+      "rationale": "Steepest gains from 1-2 to 3-5 posts per week (doubles growth rate)",
+      "note": "3-5 high-quality feed posts per week is defensible baseline"
+    },
+    "reels": {
+      "all_account_types": {"min": 3, "max": 5, "unit": "per week"},
+      "rationale": "Balances discovery potential with production bandwidth",
+      "note": "Focus on momentum in first 30-120 minutes"
+    },
+    "stories": {
+      "all_account_types": {"min": 1, "max": 3, "unit": "per day"},
+      "rationale": "Frequency sustains top-of-stack placement",
+      "note": "Use interactive stickers on first story"
+    },
+    "caution": {
+      "daily_posting": "Instagram leadership cautions against daily posting necessity",
+      "quality_focus": "Consistency without burnout trumps volume"
+    }
+  },
+  "audience_segments": {
+    "working_professionals": {
+      "peak_hours": [12, 13, 18, 19],
+      "best_days": ["monday", "tuesday", "wednesday", "thursday"],
+      "behaviors": "Commutes (7-9 AM), lunch (12-1 PM), post-work (6-8 PM)",
+      "content_preferences": "Feed posts during workday, Stories in evening"
+    },
+    "gen_z": {
+      "peak_hours": [19, 20, 21, 22],
+      "best_days": ["tuesday", "wednesday", "thursday", "friday"],
+      "behaviors": "Late evenings, occasional after-11 PM spikes",
+      "content_preferences": "Reels focus, late-night engagement"
+    },
+    "parents": {
+      "peak_hours": [20, 21, 22],
+      "best_days": ["wednesday", "thursday", "friday"],
+      "behaviors": "Mid-morning lull, after bedtime engagement",
+      "content_preferences": "Evening Stories, weekend content"
+    },
+    "students": {
+      "peak_hours": [11, 12, 13, 17, 20, 21],
+      "best_days": ["monday", "tuesday", "wednesday", "thursday", "friday"],
+      "behaviors": "Between classes, lunch, late evenings",
+      "content_preferences": "School-day mid-mornings with late-evening Reels"
+    },
+    "millennials": {
+      "peak_hours": [7, 8, 12, 13, 18, 19],
+      "best_days": ["monday", "tuesday", "wednesday", "thursday"],
+      "behaviors": "Commute, lunch, evening wind-down",
+      "content_preferences": "Noon-2 PM Feed, 7-9 AM Reels"
+    }
+  },
+  "content_type_performance": {
+    "feed_posts": {
+      "optimal_times": "10 AM-3 PM weekdays",
+      "engagement_focus": "Saves, shares, meaningful comments",
+      "algorithm_signals": ["prior activity", "post popularity", "interaction history"]
+    },
+    "reels": {
+      "optimal_times": "9 AM-12 PM, 6-9 PM weekdays",
+      "engagement_focus": "Watch time, replays, shares",
+      "algorithm_signals": ["momentum in first 30-120 minutes", "trending audio", "collaborations"],
+      "trial_reels": "Tests content with non-followers before expanding distribution"
+    },
+    "stories": {
+      "optimal_times": "Audience active hours",
+      "engagement_focus": "Interactive stickers, sequence design",
+      "algorithm_signals": ["viewing history", "prior interactions", "closeness"],
+      "frequency_impact": "More frequent posting maintains top-of-stack position"
+    },
+    "explore": {
+      "optimal_times": "Any time - rapid interaction velocity matters",
+      "engagement_focus": "Broad appeal content",
+      "algorithm_signals": ["speed and volume of interactions", "novelty", "relevant keywords"]
+    }
+  },
+  "performance_metrics": {
+    "engagement_benchmarks": {
+      "feed_engagement_rate": {
+        "minimum": 0.025,
+        "good": 0.035,
+        "excellent": 0.045
+      },
+      "reels_engagement_rate": {
+        "minimum": 0.040,
+        "good": 0.060,
+        "excellent": 0.080
+      },
+      "story_completion_rate": {
+        "minimum": 0.70,
+        "good": 0.80,
+        "excellent": 0.90
+      }
+    },
+    "reach_metrics": {
+      "follower_growth_correlation": "Positive correlation with posting frequency",
+      "reach_per_post": "Increases with frequency up to 10+ posts per week",
+      "organic_reach": "Should not differ by account type (Business vs Creator)"
+    }
+  },
+  "2025_algorithm_updates": {
+    "multi_algorithm_system": {
+      "feed": "Prior activity, post popularity, poster info, interaction history",
+      "reels": "Watch time, replays, shares, post characteristics, poster info",
+      "stories": "Viewing history, prior interactions, closeness signals",
+      "explore": "Rapid interaction velocity from diverse users"
+    },
+    "measurement_focus": {
+      "views_centric": "Analytics and benchmarks tilted toward views measurement",
+      "watch_time": "Sharpened focus especially for Reels",
+      "replays": "Key metric for Reels success"
+    },
+    "trial_reels": {
+      "description": "Tests content with non-followers to gauge broader appeal",
+      "timing_impact": "Rewards early momentum from outside existing audience",
+      "first_hour": "Critical 30-120 minutes after posting"
+    }
+  },
+  "optimization_strategies": {
+    "feed_optimization": {
+      "hooks": "First seconds must signal 'stop scrolling'",
+      "captions": "Keyword-rich with clear CTAs",
+      "hashtags": "Relevant, not excessive",
+      "timing": "10 AM-3 PM weekdays for saves and shares"
+    },
+    "reels_optimization": {
+      "first_seconds": "Hook that captures attention immediately",
+      "pacing": "Tight, engaging throughout",
+      "subtitles": "Legible for silent viewing",
+      "audio": "Trending but relevant",
+      "collaborations": "Boost reach through collab posts"
+    },
+    "stories_optimization": {
+      "interactive_elements": "Use stickers on first story",
+      "sequence_design": "Plan story flow for engagement",
+      "posting_frequency": "Maintain regular posting for top-of-stack",
+      "audience_timing": "Post during audience active hours"
+    }
+  },
+  "validation_status": "validated",
+  "last_updated": "2025-01-15",
+  "confidence_level": 0.90
+}

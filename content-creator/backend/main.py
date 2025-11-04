@@ -18,7 +18,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "api"))
 from backend.database.db import Database, init_database
 from dataclasses import asdict
 
+# Import scheduling API routes
+from api.scheduling_api import app as scheduling_app
+
 app = FastAPI(title="AI Content Automation API", version="1.0.0")
+
+# Include scheduling API routes
+app.include_router(scheduling_app, prefix="/api/v1", tags=["scheduling"])
 
 # CORS middleware
 app.add_middleware(

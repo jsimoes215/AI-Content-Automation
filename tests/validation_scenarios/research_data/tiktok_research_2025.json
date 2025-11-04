@@ -1,0 +1,191 @@
+{
+  "platform": "tiktok",
+  "research_date": "2025-01-01",
+  "data_sources": [
+    {
+      "name": "Buffer 2025",
+      "sample_size": "1000000+ posts",
+      "methodology": "Cross-platform posting time analysis across all content types",
+      "reliability": "High - Large sample, global scope, comprehensive analysis"
+    },
+    {
+      "name": "TikTok Official",
+      "sample_size": "Internal platform data",
+      "methodology": "Platform-facing guidance and recommendation system documentation",
+      "reliability": "High - Official source, algorithm insights"
+    },
+    {
+      "name": "Hootsuite 2025",
+      "sample_size": "Industry analysis",
+      "methodology": "Platform research, algorithm updates, and best practices",
+      "reliability": "High - Platform-focused research and testing"
+    }
+  ],
+  "optimal_timing": {
+    "best_single_slot": {
+      "day": "wednesday",
+      "hour": 17,
+      "confidence": 0.92
+    },
+    "notable_peak": {
+      "day": "sunday",
+      "hour": 20,
+      "note": "Notable Sunday evening peak for leisure audiences"
+    },
+    "worst_day": {
+      "day": "saturday",
+      "confidence": 0.95,
+      "note": "Consistently the weakest day for most creators"
+    },
+    "best_days": [
+      {"day": "wednesday", "rank": 1, "score": 0.92},
+      {"day": "thursday", "rank": 2, "score": 0.88},
+      {"day": "friday", "rank": 3, "score": 0.85},
+      {"day": "tuesday", "rank": 4, "score": 0.82},
+      {"day": "monday", "rank": 5, "score": 0.78},
+      {"day": "sunday", "rank": 6, "score": 0.72},
+      {"day": "saturday", "rank": 7, "score": 0.45}
+    ],
+    "peak_hours": [
+      {"hour": 16, "score": 0.87, "day_availability": ["tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 17, "score": 0.92, "day_availability": ["tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 18, "score": 0.85, "day_availability": ["tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 19, "score": 0.82, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday"]},
+      {"hour": 20, "score": 0.88, "day_availability": ["monday", "tuesday", "wednesday", "thursday", "friday", "sunday"]}
+    ],
+    "time_windows": [
+      {"start": 16, "end": 18, "name": "Afternoon Peak", "confidence": 0.89},
+      {"start": 19, "end": 21, "name": "Evening Prime Time", "confidence": 0.85}
+    ]
+  },
+  "frequency_recommendations": {
+    "emerging_creators": {
+      "min": 1,
+      "max": 4,
+      "unit": "per day",
+      "rationale": "Accelerate discovery and learning; optimize for quality, not volume alone",
+      "note": "Up to 1-4 posts per day while maintaining quality gates"
+    },
+    "established_creators": {
+      "min": 2,
+      "max": 5,
+      "unit": "per week", 
+      "rationale": "Protect creative depth and sustainability; maintain consistency without fatigue",
+      "note": "Shift to sustainable cadence once repeatable formats identified"
+    },
+    "brands": {
+      "min": 3,
+      "max": 4,
+      "unit": "per week",
+      "rationale": "Reliable brand baseline; balances reach with brand-safety and production cycles",
+      "note": "Proven baseline for Q1 2025, consistent with platform-facing guidance"
+    },
+    "general_guidance": {
+      "min": 3,
+      "max": 5,
+      "unit": "per week",
+      "rationale": "Balances visibility with planning time; adaptable by niche and resources"
+    }
+  },
+  "audience_segments": {
+    "general": {
+      "peak_hours": [16, 17, 20],
+      "best_days": ["wednesday", "thursday", "friday"],
+      "note": "Broad audience across all demographics"
+    },
+    "gen_z": {
+      "peak_hours": [19, 20, 21, 22],
+      "best_days": ["wednesday", "thursday", "friday"],
+      "note": "Later evening focus, extends to late night"
+    },
+    "professionals": {
+      "peak_hours": [12, 13, 17, 18],
+      "best_days": ["tuesday", "wednesday", "thursday"],
+      "note": "Lunch break and post-work engagement"
+    },
+    "parents": {
+      "peak_hours": [20, 21, 22],
+      "best_days": ["wednesday", "thursday", "sunday"],
+      "note": "Evening engagement after children bedtime"
+    },
+    "students": {
+      "peak_hours": [15, 16, 17, 20, 21],
+      "best_days": ["tuesday", "wednesday", "thursday", "friday"],
+      "note": "After-school and evening engagement"
+    }
+  },
+  "performance_metrics": {
+    "content_type_differences": {
+      "background_music": {
+        "uplift_percentage": 98.31,
+        "note": "Videos with background music average 98.31% more views"
+      },
+      "trending_audio": {
+        "uplift_percentage": 45.2,
+        "note": "Use trending but brand-safe audio for discoverability"
+      }
+    },
+    "algorithm_signals": {
+      "user_interactions": {
+        "weight": "high",
+        "examples": ["likes", "shares", "comments", "favorites", "watch time", "completion rate"]
+      },
+      "video_information": {
+        "weight": "medium",
+        "examples": ["captions", "sounds", "hashtags", "effects", "trending topics", "video length"]
+      },
+      "user_information": {
+        "weight": "low", 
+        "examples": ["language", "country", "device type", "time zone"]
+      }
+    },
+    "engagement_benchmarks": {
+      "good_engagement_rate": 0.08,
+      "excellent_engagement_rate": 0.15,
+      "viral_threshold": 1000000
+    }
+  },
+  "content_optimization": {
+    "hooks": {
+      "first_3_seconds": "Critical for stopping scroll",
+      "visual_clarity": "Readability of on-screen text",
+      "immediate_value": "Clear payoff or promise"
+    },
+    "format_preferences": {
+      "native_creative": {
+        "score": 0.95,
+        "note": "Authentic, native creative outperforms overly polished content"
+      },
+      "duet_stitch": {
+        "score": 0.88,
+        "note": "Interactive formats like Duet and Stitch perform well"
+      },
+      "comment_replies": {
+        "score": 0.82,
+        "note": "Responding to comments with videos increases engagement"
+      }
+    },
+    "seo_optimization": {
+      "keywords_in_captions": "Boost discoverability",
+      "voiceover_keywords": "Improve searchability",
+      "on_screen_text": "Essential for TikTok SEO"
+    }
+  },
+  "2025_trends": {
+    "micro_virality": {
+      "description": "Content that resonates within subcultures over broad viral spikes",
+      "strategy": "Serve specific communities (#BookTok, #ScienceTok, niche sports)"
+    },
+    "search_intent": {
+      "description": "Optimizing for TikTok search functionality",
+      "implementation": "Keywords in captions, voiceovers, on-screen text"
+    },
+    "authentic_storytelling": {
+      "description": "Native storytelling over polished marketing content",
+      "approach": "Clear hooks, readable text, community-native formats"
+    }
+  },
+  "validation_status": "validated",
+  "last_updated": "2025-01-15",
+  "confidence_level": 0.93
+}

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Home, FolderOpen, Library, BarChart3, Moon, Sun, FileSpreadsheet, Zap, History } from 'lucide-react';
+import { Home, FolderOpen, Library, BarChart3, Moon, Sun, FileSpreadsheet, Zap, History, Calendar } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
@@ -10,6 +10,7 @@ import JobHistory from './pages/JobHistory';
 import GoogleSheetsConnection from './pages/GoogleSheetsConnection';
 import BulkJobs from './pages/BulkJobs';
 import BulkJobProgress from './pages/BulkJobProgress';
+import SchedulingDashboard from './pages/SchedulingDashboard';
 import './App.css';
 
 function Navigation() {
@@ -27,6 +28,7 @@ function Navigation() {
   const navItems = [
     { path: '/', icon: Home, label: 'Dashboard' },
     { path: '/projects', icon: FolderOpen, label: 'Projects' },
+    { path: '/scheduling', icon: Calendar, label: 'Scheduling' },
     { path: '/bulk-jobs', icon: Zap, label: 'Bulk Jobs' },
     { path: '/job-history', icon: History, label: 'Job History' },
     { path: '/google-sheets', icon: FileSpreadsheet, label: 'Google Sheets' },
@@ -95,6 +97,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/scheduling" element={<SchedulingDashboard />} />
             <Route path="/bulk-jobs" element={<BulkJobs />} />
             <Route path="/bulk-jobs/:jobId" element={<BulkJobProgress />} />
             <Route path="/job-history" element={<JobHistory />} />
