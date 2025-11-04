@@ -3,51 +3,37 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Research Google Sheets API integration requirements",
-        "details": "1. Investigate Google Sheets API v4 for reading/writing data. 2. Research authentication methods (OAuth2, service accounts). 3. Identify required scopes and permissions. 4. Document rate limits and best practices for bulk operations.",
-        "status": "completed",
+        "content": "Research optimal posting times and frequencies for major social media platforms",
+        "details": "1. Research YouTube, TikTok, Instagram, Twitter/X, LinkedIn, Facebook posting patterns. 2. Analyze audience behavior data and algorithm preferences. 3. Study engagement metrics and growth patterns. 4. Document platform-specific best practices and recommendations.",
+        "status": "pending",
         "priority": "high"
       },
       "2": {
         "id": "2",
-        "content": "Design bulk processing architecture",
-        "details": "1. Create database schema for batch jobs and bulk operations. 2. Design API endpoints for bulk content generation. 3. Implement queue system for managing bulk requests. 4. Add progress tracking and status monitoring. 5. Create cost optimization logic (batch API calls, caching, rate limiting).",
-        "status": "completed",
+        "content": "Design content scheduling optimization system",
+        "details": "1. Create database schema for platform-specific timing data. 2. Design API endpoints for scheduling optimization. 3. Build algorithm for optimal posting time calculation. 4. Integrate with existing batch processing system.",
+        "status": "pending",
         "priority": "high"
       },
       "3": {
         "id": "3",
-        "content": "Develop Google Sheets integration backend",
-        "details": "1. Implement Google Sheets API client. 2. Create service for reading idea rows from sheets. 3. Add validation and data transformation logic. 4. Implement error handling for API failures. 5. Add webhook support for sheet updates.",
-        "status": "completed",
+        "content": "Implement scheduling optimization backend",
+        "details": "1. Create platform timing data service. 2. Build scheduling optimizer with AI recommendations. 3. Add content calendar integration. 4. Implement automated posting time suggestions.",
+        "status": "pending",
         "priority": "high"
       },
       "4": {
         "id": "4",
-        "content": "Build bulk content generation system",
-        "details": "1. Create batch processing pipeline for multiple ideas. 2. Implement parallel audio/video generation with rate limiting. 3. Add smart batching to optimize API costs. 4. Create progress monitoring and real-time updates. 5. Implement failed job retry logic.",
-        "status": "completed",
-        "priority": "high"
+        "content": "Build scheduling interface in web application",
+        "details": "1. Create scheduling dashboard component. 2. Add platform-specific timing recommendations. 3. Build content calendar view. 4. Implement batch job scheduling interface.",
+        "status": "pending",
+        "priority": "medium"
       },
       "5": {
         "id": "5",
-        "content": "Create web interface for bulk operations",
-        "details": "1. Build Google Sheets connection interface. 2. Create bulk job creation and management UI. 3. Add progress tracking dashboard. 4. Implement cost estimation and optimization settings. 5. Create job history and analytics views.",
-        "status": "completed",
-        "priority": "medium"
-      },
-      "6": {
-        "id": "6",
-        "content": "Implement cost optimization features",
-        "details": "1. Add intelligent batching to reduce API calls. 2. Implement caching for repeated content. 3. Create priority queues for different cost tiers. 4. Add cost monitoring and alerts. 5. Create usage analytics and reporting.",
-        "status": "completed",
-        "priority": "medium"
-      },
-      "7": {
-        "id": "7",
-        "content": "Testing and documentation",
-        "details": "1. Create comprehensive test suite for bulk operations. 2. Test Google Sheets integration with various sheet formats. 3. Validate cost optimization algorithms. 4. Create user documentation for bulk features. 5. Add API documentation for new endpoints.",
-        "status": "completed",
+        "content": "Create testing and documentation for scheduling features",
+        "details": "1. Test scheduling optimization algorithms. 2. Validate platform timing recommendations. 3. Create user guide for scheduling features. 4. Document API endpoints and integration examples.",
+        "status": "pending",
         "priority": "medium"
       }
     }
