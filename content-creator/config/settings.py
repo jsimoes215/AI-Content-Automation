@@ -241,3 +241,200 @@ def get_platform_config(platform: str) -> Dict[str, Any]:
         "video": get_video_settings(platform),
         "social_media": get_social_media_settings(platform)
     }
+
+# ==========================================
+# AI INFLUENCER SYSTEM CONFIGURATION
+# ==========================================
+
+# AI Influencer System Settings
+AI_INFLUENCER_SETTINGS = {
+    "system_version": "2.0.0",
+    "cost_optimization_enabled": True,
+    "base_image_provider": "dalle3",
+    "variation_providers": ["qwen", "gemini"],
+    "video_provider": "minimax",
+    "consistency_target": 0.95
+}
+
+# Voice Types for AI Influencers
+VOICE_TYPES = [
+    "Professional Male",
+    "Friendly Female", 
+    "Casual Young",
+    "Expert Female",
+    "Energetic Male"
+]
+
+# Visual Styles for AI Influencers
+VISUAL_STYLES = [
+    "Corporate",
+    "Modern Minimal", 
+    "Vibrant Energetic",
+    "Warm Approachable",
+    "Trendy Youthful",
+    "Sophisticated"
+]
+
+# Content Niches for AI Influencers
+CONTENT_NICHES = [
+    "Finance",
+    "Tech", 
+    "Fitness",
+    "Career",
+    "Lifestyle"
+]
+
+# Image Generation Settings
+IMAGE_GENERATION_SETTINGS = {
+    "dalle3": {
+        "model": "dall-e-3",
+        "quality": "hd",
+        "size": "1024x1024",
+        "cost_per_image": 0.04
+    },
+    "qwen": {
+        "model": "qwen-vl",
+        "cost_per_image": 0.005
+    },
+    "gemini": {
+        "model": "gemini-2.5-flash",
+        "cost_per_image": 0.005
+    }
+}
+
+# Video Generation Settings
+VIDEO_GENERATION_SETTINGS = {
+    "minimax": {
+        "model": "minimax-video",
+        "cost_per_second": 0.12,
+        "consistency_score": 0.95,
+        "optimal_for": "talking_head"
+    },
+    "runway": {
+        "model": "runway-gen3",
+        "cost_per_second": 0.05,
+        "consistency_score": 0.88,
+        "optimal_for": "cinematic"
+    },
+    "stability": {
+        "model": "stable-video",
+        "cost_per_second": 0.04,
+        "consistency_score": 0.80,
+        "optimal_for": "animated"
+    }
+}
+
+# Cost Optimization Settings
+COST_OPTIMIZATION_SETTINGS = {
+    "enable_base_variation_strategy": True,
+    "base_image_cost": 0.04,  # DALL-E 3
+    "variation_image_cost": 0.005,  # Qwen/Gemini
+    "savings_threshold": 0.7,  # 70% savings target
+    "max_variations_per_base": 20,
+    "quality_fallback": True
+}
+
+# Persona Optimization Settings
+PERSONA_OPTIMIZATION_SETTINGS = {
+    "consistency_weight": 0.3,
+    "engagement_weight": 0.25,
+    "growth_weight": 0.25,
+    "quality_weight": 0.2,
+    "optimization_frequency": "weekly",
+    "min_performance_threshold": 6.0
+}
+
+# Database Configuration for AI Influencer
+AI_INFLUENCER_DB = {
+    "tables": {
+        "influencers": "ai_influencers",
+        "visual_assets": "influencer_visual_assets", 
+        "onboarding": "influencer_onboarding",
+        "content_generation": "generated_content",
+        "cost_tracking": "cost_optimization_logs"
+    }
+}
+
+# API Key Requirements
+REQUIRED_API_KEYS = {
+    "essential": [
+        "OPENAI_API_KEY",      # DALL-E 3, GPT-4
+        "MINIMAX_API_KEY",     # Video generation
+        "QWEN_API_KEY"         # Cost-optimized image variations
+    ],
+    "important": [
+        "GOOGLE_API_KEY",      # Gemini 2.5 Flash (alternative image)
+        "YOUTUBE_API_KEY",     # Already in existing system
+        "TWITTER_BEARER_TOKEN" # Already in existing system
+    ],
+    "optional": [
+        "RUNWAY_API_KEY",      # Cinematic videos
+        "STABILITY_API_KEY"    # Animated videos
+    ]
+}
+
+# Performance Thresholds
+PERFORMANCE_THRESHOLDS = {
+    "persona_consistency": {
+        "excellent": 9.0,
+        "good": 7.0,
+        "acceptable": 6.0,
+        "needs_improvement": 4.0
+    },
+    "engagement_rate": {
+        "excellent": 0.10,
+        "good": 0.05,
+        "acceptable": 0.03,
+        "needs_improvement": 0.01
+    },
+    "cost_per_content": {
+        "excellent": 2.0,
+        "good": 5.0,
+        "acceptable": 10.0,
+        "needs_improvement": 20.0
+    }
+}
+
+def get_ai_influencer_config() -> Dict[str, Any]:
+    """Get complete AI Influencer system configuration"""
+    return {
+        "system": AI_INFLUENCER_SETTINGS,
+        "voice_types": VOICE_TYPES,
+        "visual_styles": VISUAL_STYLES,
+        "content_niches": CONTENT_NICHES,
+        "image_generation": IMAGE_GENERATION_SETTINGS,
+        "video_generation": VIDEO_GENERATION_SETTINGS,
+        "cost_optimization": COST_OPTIMIZATION_SETTINGS,
+        "persona_optimization": PERSONA_OPTIMIZATION_SETTINGS,
+        "database": AI_INFLUENCER_DB,
+        "api_requirements": REQUIRED_API_KEYS,
+        "performance_thresholds": PERFORMANCE_THRESHOLDS
+    }
+
+def get_image_generation_config(provider: str) -> Dict[str, Any]:
+    """Get image generation configuration for specific provider"""
+    return IMAGE_GENERATION_SETTINGS.get(provider, IMAGE_GENERATION_SETTINGS["dalle3"])
+
+def get_video_generation_config(provider: str) -> Dict[str, Any]:
+    """Get video generation configuration for specific provider"""
+    return VIDEO_GENERATION_SETTINGS.get(provider, VIDEO_GENERATION_SETTINGS["minimax"])
+
+def validate_api_keys() -> Dict[str, bool]:
+    """Validate that required API keys are available"""
+    validation_results = {}
+    
+    for category, keys in REQUIRED_API_KEYS.items():
+        for key in keys:
+            validation_results[key] = os.environ.get(key) is not None
+    
+    return validation_results
+
+# Environment-specific AI Influencer overrides
+if ENVIRONMENT == "production":
+    # Production settings for AI Influencer
+    AI_INFLUENCER_SETTINGS["consistency_target"] = 0.98
+    COST_OPTIMIZATION_SETTINGS["savings_threshold"] = 0.75
+elif ENVIRONMENT == "development":
+    # Development settings for AI Influencer
+    AI_INFLUENCER_SETTINGS["consistency_target"] = 0.90
+    COST_OPTIMIZATION_SETTINGS["savings_threshold"] = 0.60

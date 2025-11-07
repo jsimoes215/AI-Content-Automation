@@ -1,0 +1,106 @@
+# AI Influencer Management POC
+# Core FastAPI and web framework dependencies
+
+# Web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+# Using SQLite for POC, but can be PostgreSQL for production
+# sqlalchemy==2.0.23  # If using SQLAlchemy ORM
+# alembic==1.12.1     # Database migrations
+
+# Data validation and serialization
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# HTTP client
+httpx==0.25.2
+requests==2.31.0
+
+# Environment and configuration
+python-dotenv==1.0.0
+python-jose[cryptography]==3.3.0  # For JWT tokens if needed
+passlib[bcrypt]==1.7.4
+
+# Async support
+asyncio==3.4.3
+aiofiles==23.2.1
+
+# Development tools
+pytest==7.4.3
+pytest-asyncio==0.21.1
+black==23.11.0
+isort==5.12.0
+
+# Monitoring and logging
+loguru==0.7.2
+
+# File handling
+Pillow==10.1.0  # For image processing if needed
+
+# JSON handling
+orjson==3.9.10  # Fast JSON processing
+
+# Date/time handling
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Type checking
+mypy==1.7.1
+
+# CORS support
+starlette==0.27.0  # Included with FastAPI
+
+# Production server
+gunicorn==21.2.0
+
+# Database connection pooling
+# For SQLite (POC):
+# No additional dependencies needed
+
+# For PostgreSQL (Production):
+# psycopg2-binary==2.9.9
+# asyncpg==0.29.0
+
+# Redis (for caching):
+# redis==5.0.1
+# aioredis==2.0.1
+
+# Background tasks
+celery==5.3.4
+flower==2.0.1  # Celery monitoring
+
+# API documentation
+swagger-ui-bundle==0.0.9
+redoc==2.1.0
+
+# Security
+cryptography==41.0.7
+email-validator==2.1.0
+
+# AI and ML (integrating with existing MiniMax services)
+# numpy==1.24.3
+# openai==1.3.7
+# transformers==4.35.2
+# torch==2.1.1
+
+# Content generation (extending existing system)
+# tiktoken==0.5.2
+# beautifulsoup4==4.12.2
+# lxml==4.9.3
+
+# Social media APIs
+# python-twitter==3.5
+# google-api-python-client==2.108.0
+# facebook-sdk==3.1.0
+# instagram-private-api==1.16.3
+
+# Analytics and monitoring
+# prometheus-client==0.19.0
+# sentry-sdk[fastapi]==1.38.0
+
+# WebSocket support
+# websockets==12.0
+# python-socketio==5.9.0
