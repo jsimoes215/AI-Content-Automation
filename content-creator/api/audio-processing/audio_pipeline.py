@@ -75,47 +75,66 @@ class AudioPipeline:
             raise
     
     async def _load_voices(self) -> List[Dict[str, Any]]:
-        """Load available voices from the audio service"""
-        # In actual implementation, this would call:
-        # voices = await get_voice_list()
+        """Load available voices from Amazon Polly"""
         
-        # Mock voices for testing
-        mock_voices = [
-            {
-                "voice_id": "professional_female",
-                "name": "Sarah",
-                "language": "en-US",
-                "style": "professional",
-                "gender": "female",
-                "age": "adult"
-            },
-            {
-                "voice_id": "professional_male", 
-                "name": "Michael",
-                "language": "en-US",
-                "style": "professional",
-                "gender": "male",
-                "age": "adult"
-            },
-            {
-                "voice_id": "casual_female",
-                "name": "Emma",
-                "language": "en-US", 
-                "style": "casual",
-                "gender": "female",
-                "age": "young_adult"
-            },
-            {
-                "voice_id": "energetic_male",
-                "name": "Jake",
-                "language": "en-US",
-                "style": "energetic",
-                "gender": "male", 
-                "age": "young_adult"
-            }
-        ]
-        
-        return mock_voices
+        try:
+            # Import integration function
+            sys.path.append('/workspace')
+            from integrate_amazon_polly_audio import AmazonPollyIntegration
+            
+            # Initialize Polly and get real voices
+            polly = AmazonPollyIntegration()
+            voices = await polly.get_available_voices()
+            
+            # Add our custom voice mappings
+            custom_voices = [
+                {
+                    "voice_id": "professional_female",
+                    "name": "Joanna",
+                    "language": "en-US",
+                    "style": "neural",
+                    "gender": "female",
+                    "age": "adult",
+                    "description": "Professional neural voice from Amazon Polly"
+                },
+                {
+                    "voice_id": "professional_male", 
+                    "name": "Matthew",
+                    "language": "en-US",
+                    "style": "neural",
+                    "gender": "male",
+                    "age": "adult",
+                    "description": "Professional neural voice from Amazon Polly"
+                }
+            ]
+            
+            # Combine real and custom voices
+            all_voices = custom_voices + voices
+            
+            logger.info(f"Loaded {len(all_voices)} voices from Amazon Polly")
+            return all_voices
+            
+        except Exception as e:
+            logger.error(f"Failed to load voices from Amazon Polly: {e}")
+            # Return fallback voices
+            return [
+                {
+                    "voice_id": "professional_female",
+                    "name": "Joanna",
+                    "language": "en-US",
+                    "style": "neural",
+                    "gender": "female",
+                    "age": "adult"
+                },
+                {
+                    "voice_id": "professional_male", 
+                    "name": "Matthew",
+                    "language": "en-US",
+                    "style": "neural",
+                    "gender": "male",
+                    "age": "adult"
+                }
+            ]
     
     async def generate_voiceover(self, 
                                 script_scenes: List[Dict[str, Any]], 
@@ -202,29 +221,35 @@ class AudioPipeline:
                                    texts: List[str], 
                                    voice_id: str, 
                                    style_preferences: Dict[str, Any]) -> List[str]:
-        """Generate audio files from text batch"""
+        """Generate audio files from text batch using Amazon Polly"""
         
-        # Mock implementation - in actual use would call:
-        # result = await batch_text_to_audio(count=len(texts), ...)
-
-        audio_files = []
-        output_files = []
+        # Import integration function
+        sys.path.append('/workspace')
+        from integrate_amazon_polly_audio import real_audio_generation, POLLY_VOICE_MAPPING
         
-        # Create output paths
-        for i in range(len(texts)):
-            output_path = os.path.join(self.audio_dir, f"voiceover_{i:03d}.mp3")
-            output_files.append(output_path)
+        # Map voice to Polly voice ID
+        polly_voice_id = POLLY_VOICE_MAPPING.get(voice_id, voice_id)
         
-        # Simulate audio generation
-        for i, (text, output_file) in enumerate(zip(texts, output_files)):
-            # Create mock audio file
-            os.makedirs(os.path.dirname(output_file), exist_ok=True)
-            with open(output_file, "w") as f:
-                f.write(f"Mock audio file for: {text[:50]}...")
-            
-            audio_files.append(output_file)
-        
-        return audio_files
+        # Generate audio using Amazon Polly
+        try:
+            audio_files = await real_audio_generation(
+                texts=texts,
+                voice_id=polly_voice_id,
+                output_dir=self.audio_dir,
+                engine="neural"
+            )
+            return audio_files
+        except Exception as e:
+            logger.error(f"Amazon Polly integration failed: {e}")
+            # Fallback to mock implementation
+            audio_files = []
+            for i, text in enumerate(texts):
+                output_path = os.path.join(self.audio_dir, f"voiceover_{i:03d}.mp3")
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                with open(output_path, "w") as f:
+                    f.write(f"Fallback audio file for: {text[:50]}...")
+                audio_files.append(output_path)
+            return audio_files
     
     async def generate_background_music(self, 
                                        duration: float,

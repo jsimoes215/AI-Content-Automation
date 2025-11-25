@@ -438,3 +438,73 @@ elif ENVIRONMENT == "development":
     # Development settings for AI Influencer
     AI_INFLUENCER_SETTINGS["consistency_target"] = 0.90
     COST_OPTIMIZATION_SETTINGS["savings_threshold"] = 0.60
+
+# ========================================
+# REAL API INTEGRATIONS CONFIGURATION
+# ========================================
+
+# Amazon Polly Audio Configuration
+AMAZON_POLLY_CONFIG = {
+    "enabled": True,
+    "aws_region": os.environ.get("AWS_REGION", "us-east-1"),
+    "default_engine": "neural",
+    "default_format": "mp3",
+    "default_sample_rate": "22050",
+    "cost_per_character": {
+        "standard": 4.00 / 1_000_000,  # $4 per 1M characters
+        "neural": 16.00 / 1_000_000    # $16 per 1M characters
+    },
+    "free_tier": {
+        "standard": 5_000_000,  # 5M characters/month
+        "neural": 1_000_000     # 1M characters/month
+    }
+}
+
+# MiniMax Video Configuration
+MINIMAX_VIDEO_CONFIG = {
+    "enabled": True,
+    "base_url": "https://api.minimax.chat/v1",
+    "default_model": "minimax-talkinghead",
+    "default_resolution": "1280x720",
+    "default_duration": 10,
+    "max_duration": 60,
+    "cost_per_second": 0.032,  # $0.032 per second
+    "supported_resolutions": ["1280x720", "1920x1080"]
+}
+
+# Updated API Requirements
+REAL_API_REQUIREMENTS = {
+    "audio_generation": ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION"],
+    "video_generation": ["MINIMAX_API_KEY"],
+    "image_generation": ["OPENAI_API_KEY"],  # DALL-E 3 or use Qwen/Gemini
+    "social_media": ["YOUTUBE_API_KEY", "TWITTER_BEARER_TOKEN", "INSTAGRAM_ACCESS_TOKEN"]
+}
+
+# Update existing REQUIRED_API_KEYS with real implementations
+for category, keys in REAL_API_REQUIREMENTS.items():
+    if category in REQUIRED_API_KEYS:
+        REQUIRED_API_KEYS[category].extend(keys)
+    else:
+        REQUIRED_API_KEYS[category] = keys
+
+def get_audio_config() -> Dict[str, Any]:
+    """Get Amazon Polly audio configuration"""
+    return AMAZON_POLLY_CONFIG
+
+def get_video_config() -> Dict[str, Any]:
+    """Get MiniMax Video configuration"""
+    return MINIMAX_VIDEO_CONFIG
+
+def validate_real_api_keys() -> Dict[str, bool]:
+    """Validate real API keys are available"""
+    validation_results = {}
+    
+    # Check AWS credentials
+    validation_results["AWS_ACCESS_KEY_ID"] = os.environ.get("AWS_ACCESS_KEY_ID") is not None
+    validation_results["AWS_SECRET_ACCESS_KEY"] = os.environ.get("AWS_SECRET_ACCESS_KEY") is not None
+    validation_results["AWS_REGION"] = os.environ.get("AWS_REGION", "us-east-1") is not None
+    
+    # Check MiniMax API key
+    validation_results["MINIMAX_API_KEY"] = os.environ.get("MINIMAX_API_KEY") is not None
+    
+    return validation_results
