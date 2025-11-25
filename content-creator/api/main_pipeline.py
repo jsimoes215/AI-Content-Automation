@@ -13,9 +13,9 @@ import logging
 
 # Import pipeline components
 from api.scripts.script_generator import ScriptGenerator, Script
-from api.audio_processing.audio_pipeline import AudioPipeline, AudioMix
-from api.video_generation.video_pipeline import VideoGenerationPipeline, VideoComposition
-from api.content_library.library_manager import ContentLibraryManager, SceneMetadata, SearchQuery
+from api.audio_processing import AudioPipeline, AudioMix
+from api.video_generation import VideoGenerationPipeline, VideoComposition
+from api.content_library import ContentLibraryManager, SceneMetadata, SearchQuery
 from api.sentiment_analysis import SentimentAnalysisPipeline, SentimentAnalysisPipelineFactory
 
 # Configure logging

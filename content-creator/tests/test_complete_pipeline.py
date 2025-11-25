@@ -9,8 +9,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-# Add the project root to Python path
-sys.path.append('/workspace/content-creator')
+# Add the project root to Python path  
+current_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(current_dir / "api"))
 
 from api.main_pipeline import PipelineFactory, ContentCreationRequest
 

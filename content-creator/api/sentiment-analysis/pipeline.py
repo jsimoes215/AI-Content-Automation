@@ -10,9 +10,9 @@ from dataclasses import dataclass, asdict
 from datetime import datetime
 import uuid
 
-from sentiment_analyzer import SentimentAnalyzer, CommentAnalysis, SentimentScore
-from topic_extractor import TopicExtractor, TopicAnalysis
-from improvement_identifier import ImprovementIdentifier, ImprovementAnalysis
+from .sentiment_analyzer import SentimentAnalyzer, CommentAnalysis, SentimentScore
+from .topic_extractor import TopicExtractor, TopicAnalysis
+from .improvement_identifier import ImprovementIdentifier, ImprovementAnalysis
 
 logger = logging.getLogger(__name__)
 

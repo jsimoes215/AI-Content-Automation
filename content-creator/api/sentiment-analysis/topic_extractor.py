@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 import math
 
-from sentiment_analyzer import CommentAnalysis
+from .sentiment_analyzer import CommentAnalysis
 
 logger = logging.getLogger(__name__)
 

@@ -224,7 +224,7 @@ async def generate_script_task(project_id: str, target_duration: int, scene_coun
         })
         
         # Import full pipeline
-        from api.main_pipeline import PipelineFactory
+        from api.api.main_pipeline import PipelineFactory
         
         # Step 1: Initialize
         db.update_job_progress(job_id, 1)

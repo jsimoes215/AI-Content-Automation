@@ -13,9 +13,9 @@ sys.path.insert(0, current_dir)
 
 # Import modules directly
 try:
-    from sentiment_analyzer import SentimentAnalyzer
-    from topic_extractor import TopicExtractor  
-    from improvement_identifier import ImprovementIdentifier
+    from .sentiment_analyzer import SentimentAnalyzer
+    from .topic_extractor import TopicExtractor  
+    from .improvement_identifier import ImprovementIdentifier
     print("✓ Successfully imported all modules")
 except ImportError as e:
     print(f"✗ Import error: {e}")

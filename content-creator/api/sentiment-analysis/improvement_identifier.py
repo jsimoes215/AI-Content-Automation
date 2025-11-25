@@ -11,8 +11,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta
 import math
 
-from sentiment_analyzer import CommentAnalysis, SentimentScore
-from topic_extractor import TopicAnalysis, TopicScore
+from .sentiment_analyzer import CommentAnalysis, SentimentScore
+from .topic_extractor import TopicAnalysis, TopicScore
 
 logger = logging.getLogger(__name__)
 
