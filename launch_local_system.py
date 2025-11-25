@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 # Add the content-creator directory and its subdirectories to Python path
-content_creator_dir = Path(__file__).parent / "ai_content_automation" / "content-creator"
+content_creator_dir = Path(__file__).parent / "content-creator"
 api_dir = content_creator_dir / "api"
 backend_dir = content_creator_dir / "backend"
 
