@@ -99,8 +99,8 @@ class RecommendationRequest(BaseModel):
     content_type: Optional[str] = None
     page_token: Optional[str] = None
     page_size: int = Field(default=50, ge=10, le=200)
-    sort: str = Field(default="score", regex="^(created_at|score)$")
-    order: str = Field(default="desc", regex="^(asc|desc)$")
+    sort: str = Field(default="score", pattern="^(created_at|score)$")
+    order: str = Field(default="desc", pattern="^(asc|desc)$")
 
 class Recommendation(BaseModel):
     id: str
@@ -646,8 +646,8 @@ async def get_recommendations(
     content_type: Optional[str] = Query(None),
     page_token: Optional[str] = Query(None),
     page_size: int = Query(50, ge=10, le=200),
-    sort: str = Query("score", regex="^(created_at|score)$"),
-    order: str = Query("desc", regex="^(asc|desc)$"),
+    sort: str = Query("score", pattern="^(created_at|score)$"),
+    order: str = Query("desc", pattern="^(asc|desc)$"),
     current_user: dict = Depends(get_current_user)
 ):
     """Get scheduling recommendations"""
@@ -683,8 +683,8 @@ async def get_schedule(
     page_token: Optional[str] = Query(None),
     page_size: int = Query(50, ge=10, le=200),
     state: Optional[List[str]] = Query(None),
-    sort: str = Query("created_at", regex="^(created_at|updated_at)$"),
-    order: str = Query("asc", regex="^(asc|desc)$"),
+    sort: str = Query("created_at", pattern="^(created_at|updated_at)$"),
+    order: str = Query("asc", pattern="^(asc|desc)$"),
     expand: Optional[List[str]] = Query(None),
     current_user: dict = Depends(get_current_user)
 ):
